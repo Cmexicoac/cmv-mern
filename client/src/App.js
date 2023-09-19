@@ -7,7 +7,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { themeSettings } from "theme";
 import Dashboard from "scenes/dashboard"
 import Layout from "scenes/layout"
-
+import Students from "scenes/students";
 
 
 function App() {
@@ -25,6 +25,7 @@ function App() {
             <Route element={<Layout/>}>
               <Route path="/" element={<Navigate to='/dashboard' replace/>}/>
               <Route path="/dashboard" element={<Dashboard/>}/>
+              <Route path="/students" element={<Students/>}/>
             </Route>
             </Routes>
         </ThemeProvider>

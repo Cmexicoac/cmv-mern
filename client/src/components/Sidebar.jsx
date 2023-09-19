@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Box,
   Divider,
@@ -27,21 +26,41 @@ import {
   AdminPanelSettingsOutlined,
   TrendingUpOutlined,
   PieChartOutlined,
+  GroupOutlined,
+  PersonOutlined,
+  ArrowBackOutlined,
 } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "./FlexBetween";
 import profileImage from "assets/images/profile.jpeg";
 
-
 const navItems = [
-    {
-        text: "Dashboard",
-        icon: <HomeOutlined />,
-    },
-    
-]
+  {
+    text: "Dashboard",
+    icon: <HomeOutlined />,
+    children: [
+      {
+        text: "Alumnos",
+        icon: <PersonOutlined />,
+        path: "/students",
+      },
+      {
+        text: "Grupos",
+        icon: <GroupOutlined />,
+        path: "/groups",
+      },
+    ],
+  },
+];
 
+const studentIds = [
+  "A00123412",
+  "A00123413",
+  "A00123414",
+  "A00123415",
+  "A00123416",
+];
 
 const Sidebar = ({
   drawerWidth,
@@ -51,12 +70,37 @@ const Sidebar = ({
 }) => {
   const { pathname } = useLocation();
   const [active, setActive] = useState("");
+  const [showStudents, setShowStudents] = useState(false);
   const navigate = useNavigate();
   const theme = useTheme();
 
   useEffect(() => {
     setActive(pathname.substring(1));
   }, [pathname]);
+
+  const handleClick = (text, path) => {
+    const lcText = text.toLowerCase();
+    if (path) {
+      navigate(path);
+      setActive(lcText);
+    } else if (studentIds.includes(text)) {
+      navigate(`/students/${text}`);
+      setActive(lcText);
+    } else {
+      setActive(lcText);
+    }
+    if (lcText === "alumnos") {
+      setShowStudents(true);
+    } else {
+      setShowStudents(false);
+    }
+  };
+
+  const handleBackClick = () => {
+    setShowStudents(false);
+    setActive("dashboard");
+    navigate("/dashboard");
+  };
 
   return (
     <Box component="nav">
@@ -76,22 +120,21 @@ const Sidebar = ({
             },
           }}
         >
-            <Box width="100%">
-                <Box m="1.5rem 2rem 2rem 3rem">
-                    <FlexBetween color={theme.palette.secondary.main}>
-                        <Box display="flex" alignItems="center" gap="0.5rem">
-                            <Typography variant="h4">CMV</Typography>
-                            </Box>
-                            {isNonMobile && (
-                                <IconButton onClick={() => setIsSidebarOpen(false)}>
-                                    <ChevronLeft />
-                                 </IconButton>
-                            )}   
-
-                    </FlexBetween>
+          <Box width="100%">
+            <Box m="1.5rem 2rem 2rem 3rem">
+              <FlexBetween color={theme.palette.secondary.main}>
+                <Box display="flex" alignItems="center" gap="0.5rem">
+                  <Typography variant="h4">CMV</Typography>
                 </Box>
-                <List>
-              {navItems.map(({ text, icon }) => {
+                {isNonMobile ? null : (
+                  <IconButton onClick={() => setIsSidebarOpen(false)}>
+                    <ChevronLeft />
+                  </IconButton>
+                )}
+              </FlexBetween>
+            </Box>
+            <List>
+              {navItems.map(({ text, icon, children }) => {
                 if (!icon) {
                   return (
                     <Typography key={text} sx={{ m: "2.25rem 0 1rem 3rem" }}>
@@ -102,45 +145,117 @@ const Sidebar = ({
                 const lcText = text.toLowerCase();
 
                 return (
-                  <ListItem key={text} disablePadding>
-                    <ListItemButton
-                      onClick={() => {
-                        navigate(`/${lcText}`);
-                        setActive(lcText);
-                      }}
-                      sx={{
-                        backgroundColor:
-                          active === lcText
-                            ? theme.palette.secondary[300]
-                            : "transparent",
-                        color:
-                          active === lcText
-                            ? theme.palette.primary[600]
-                            : theme.palette.secondary[100],
-                      }}
-                    >
-                      <ListItemIcon
+                  <div key={text}>
+                    <ListItem disablePadding>
+                      <ListItemButton
+                        onClick={() => {
+                          if (children) {
+                            setActive(lcText);
+                          } else {
+                            handleClick(text, null);
+                          }
+                          if (lcText === "alumnos") {
+                            setShowStudents(true);
+                          } else {
+                            setShowStudents(false);
+                          }
+                        }}
                         sx={{
-                          ml: "2rem",
+                          backgroundColor:
+                            active === lcText
+                              ? theme.palette.secondary[300]
+                              : "transparent",
                           color:
                             active === lcText
                               ? theme.palette.primary[600]
-                              : theme.palette.secondary[200],
+                              : theme.palette.secondary[100],
                         }}
                       >
-                        {icon}
-                      </ListItemIcon>
-                      <ListItemText primary={text} />
-                      {active === lcText && (
-                        <ChevronRightOutlined sx={{ ml: "auto" }} />
-                      )}
-                    </ListItemButton>
-                  </ListItem>
+                        <ListItemIcon
+                          sx={{
+                            ml: "2rem",
+                            color:
+                              active === lcText
+                                ? theme.palette.primary[600]
+                                : theme.palette.secondary[200],
+                          }}
+                        >
+                          {icon}
+                        </ListItemIcon>
+                        <ListItemText primary={text} />
+                        {children && (
+                          <ChevronRightOutlined sx={{ ml: "auto" }} />
+                        )}
+                      </ListItemButton>
+                    </ListItem>
+                    {children && (
+                      <List sx={{ pl: "3rem" }}>
+                        {children.map(({ text, icon, path }) => {
+                          const lcChildText = text.toLowerCase();
+                          return (
+                            <ListItem
+                              key={text}
+                              disablePadding
+                              sx={{
+                                backgroundColor:
+                                  active === lcChildText
+                                    ? theme.palette.secondary[300]
+                                    : "transparent",
+                                color:
+                                  active === lcChildText
+                                    ? theme.palette.primary[600]
+                                    : theme.palette.secondary[100],
+                              }}
+                            >
+                              <ListItemButton
+                                onClick={() => {
+                                  handleClick(text, path);
+                                }}
+                              >
+                                <ListItemIcon
+                                  sx={{
+                                    ml: "2rem",
+                                    color:
+                                      active === lcChildText
+                                        ? theme.palette.primary[600]
+                                        : theme.palette.secondary[200],
+                                  }}
+                                >
+                                  {icon}
+                                </ListItemIcon>
+                                <ListItemText primary={text} />
+                              </ListItemButton>
+                            </ListItem>
+                          );
+                        })}
+                      </List>
+                    )}
+                    <Divider />
+                  </div>
                 );
               })}
             </List>
-            </Box>
-            </Drawer>
+            {showStudents && (
+              <List sx={{ pl: "3rem" }}>
+                <ListItem disablePadding>
+                  <ListItemButton onClick={handleBackClick}>
+                    <ListItemIcon>
+                      <ArrowBackOutlined />
+                    </ListItemIcon>
+                    <ListItemText primary="Back" />
+                  </ListItemButton>
+                </ListItem>
+                {studentIds.map((id) => (
+                  <ListItem key={id} disablePadding>
+                    <ListItemButton onClick={() => handleClick(id)}>
+                      <ListItemText primary={id} />
+                    </ListItemButton>
+                  </ListItem>
+                ))}
+              </List>
+            )}
+          </Box>
+        </Drawer>
       )}
     </Box>
   );
