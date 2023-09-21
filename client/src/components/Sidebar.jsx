@@ -71,7 +71,9 @@ const Sidebar = ({
   const { pathname } = useLocation();
   const [active, setActive] = useState("");
   const [showStudents, setShowStudents] = useState(false);
+  const [showNavItems, setShowNavItems] = useState(true);
   const navigate = useNavigate();
+  const location = useLocation();
   const theme = useTheme();
 
   useEffect(() => {
@@ -91,13 +93,16 @@ const Sidebar = ({
     }
     if (lcText === "alumnos") {
       setShowStudents(true);
+      setShowNavItems(false); // hide navItems
     } else {
       setShowStudents(false);
+      setShowNavItems(true); // show navItems
     }
   };
 
   const handleBackClick = () => {
     setShowStudents(false);
+    setShowNavItems(true); // show navItems
     setActive("dashboard");
     navigate("/dashboard");
   };
@@ -134,126 +139,130 @@ const Sidebar = ({
               </FlexBetween>
             </Box>
             <List>
-              {navItems.map(({ text, icon, children }) => {
-                if (!icon) {
-                  return (
-                    <Typography key={text} sx={{ m: "2.25rem 0 1rem 3rem" }}>
-                      {text}
-                    </Typography>
-                  );
-                }
-                const lcText = text.toLowerCase();
-
-                return (
-                  <div key={text}>
-                    <ListItem disablePadding>
-                      <ListItemButton
-                        onClick={() => {
-                          if (children) {
-                            setActive(lcText);
-                          } else {
-                            handleClick(text, null);
-                          }
-                          if (lcText === "alumnos") {
-                            setShowStudents(true);
-                          } else {
-                            setShowStudents(false);
-                          }
-                        }}
-                        sx={{
-                          backgroundColor:
-                            active === lcText
-                              ? theme.palette.secondary[300]
-                              : "transparent",
-                          color:
-                            active === lcText
-                              ? theme.palette.primary[600]
-                              : theme.palette.secondary[100],
-                        }}
+              {showNavItems && // conditionally render navItems
+                navItems.map(({ text, icon, children }) => {
+                  if (!icon) {
+                    return (
+                      <Typography
+                        key={text}
+                        sx={{ m: "2.25rem 0 1rem 3rem" }}
                       >
-                        <ListItemIcon
+                        {text}
+                      </Typography>
+                    );
+                  }
+                  const lcText = text.toLowerCase();
+
+                  return (
+                    <div key={text}>
+                      <ListItem disablePadding>
+                        <ListItemButton
+                          onClick={() => {
+                            if (children) {
+                              setActive(lcText);
+                            } else {
+                              handleClick(text, null);
+                            }
+                            if (lcText === "alumnos") {
+                              setShowStudents(true);
+                            } else {
+                              setShowStudents(false);
+                            }
+                          }}
                           sx={{
-                            ml: "2rem",
+                            backgroundColor:
+                              active === lcText
+                                ? theme.palette.secondary[300]
+                                : "transparent",
                             color:
                               active === lcText
                                 ? theme.palette.primary[600]
-                                : theme.palette.secondary[200],
+                                : theme.palette.secondary[100],
                           }}
                         >
-                          {icon}
-                        </ListItemIcon>
-                        <ListItemText primary={text} />
-                        {children && (
-                          <ChevronRightOutlined sx={{ ml: "auto" }} />
-                        )}
-                      </ListItemButton>
-                    </ListItem>
-                    {children && (
-                      <List sx={{ pl: "3rem" }}>
-                        {children.map(({ text, icon, path }) => {
-                          const lcChildText = text.toLowerCase();
-                          return (
-                            <ListItem
-                              key={text}
-                              disablePadding
-                              sx={{
-                                backgroundColor:
-                                  active === lcChildText
-                                    ? theme.palette.secondary[300]
-                                    : "transparent",
-                                color:
-                                  active === lcChildText
-                                    ? theme.palette.primary[600]
-                                    : theme.palette.secondary[100],
-                              }}
-                            >
-                              <ListItemButton
-                                onClick={() => {
-                                  handleClick(text, path);
+                          <ListItemIcon
+                            sx={{
+                              ml: "2rem",
+                              color:
+                                active === lcText
+                                  ? theme.palette.primary[600]
+                                  : theme.palette.secondary[200],
+                            }}
+                          >
+                            {icon}
+                          </ListItemIcon>
+                          <ListItemText primary={text} />
+                          {children && (
+                            <ChevronRightOutlined sx={{ ml: "auto" }} />
+                          )}
+                        </ListItemButton>
+                      </ListItem>
+                      {children && (
+                        <List sx={{ pl: "3rem" }}>
+                          {children.map(({ text, icon, path }) => {
+                            const lcChildText = text.toLowerCase();
+                            return (
+                              <ListItem
+                                key={text}
+                                disablePadding
+                                sx={{
+                                  backgroundColor:
+                                    active === lcChildText
+                                      ? theme.palette.secondary[300]
+                                      : "transparent",
+                                  color:
+                                    active === lcChildText
+                                      ? theme.palette.primary[600]
+                                      : theme.palette.secondary[100],
                                 }}
                               >
-                                <ListItemIcon
-                                  sx={{
-                                    ml: "2rem",
-                                    color:
-                                      active === lcChildText
-                                        ? theme.palette.primary[600]
-                                        : theme.palette.secondary[200],
+                                <ListItemButton
+                                  onClick={() => {
+                                    handleClick(text, path);
                                   }}
                                 >
-                                  {icon}
-                                </ListItemIcon>
-                                <ListItemText primary={text} />
-                              </ListItemButton>
-                            </ListItem>
-                          );
-                        })}
-                      </List>
-                    )}
-                    <Divider />
-                  </div>
-                );
-              })}
-            </List>
-            {showStudents && (
-              <List sx={{ pl: "3rem" }}>
-                <ListItem disablePadding>
-                  <ListItemButton onClick={handleBackClick}>
-                    <ListItemIcon>
-                      <ArrowBackOutlined />
-                    </ListItemIcon>
-                    <ListItemText primary="Back" />
-                  </ListItemButton>
-                </ListItem>
-                {studentIds.map((id) => (
-                  <ListItem key={id} disablePadding>
-                    <ListItemButton onClick={() => handleClick(id)}>
-                      <ListItemText primary={id} />
+                                  <ListItemIcon
+                                    sx={{
+                                      ml: "2rem",
+                                      color:
+                                        active === lcChildText
+                                          ? theme.palette.primary[600]
+                                          : theme.palette.secondary[200],
+                                    }}
+                                  >
+                                    {icon}
+                                  </ListItemIcon>
+                                  <ListItemText primary={text} />
+                                </ListItemButton>
+                              </ListItem>
+                            );
+                          })}
+                        </List>
+                      )}
+                      <Divider />
+                    </div>
+                  );
+                })}
+              {showStudents && (
+                <List sx={{ pl: "3rem" }}>
+                  <ListItem disablePadding>
+                    <ListItemButton onClick={handleBackClick}>
+                      <ListItemIcon>
+                        <ArrowBackOutlined />
+                      </ListItemIcon>
+                      <ListItemText primary="Back" />
                     </ListItemButton>
                   </ListItem>
-                ))}
-              </List>
-            )}
+                  {studentIds.map((id) => (
+                    <ListItem key={id} disablePadding>
+                      <ListItemButton onClick={() => handleClick(id)}>
+                        <ListItemText primary={id} />
+                      </ListItemButton>
+                    </ListItem>
+                  ))}
+                </List>
+              )}
+            </List>
           </Box>
         </Drawer>
       )}

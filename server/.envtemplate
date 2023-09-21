@@ -1,2 +1,2 @@
-MONGO_URL='mongodb+srv://jonastclausen:<password>@cluster0.qnzsceh.mongodb.net/?retryWrites=true&w=majority'
+MONGO_URL='mongodb+srv://<username>:<password>@cluster0.qnzsceh.mongodb.net/?retryWrites=true&w=majority'
 PORT= 3001
