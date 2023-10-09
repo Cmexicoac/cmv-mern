@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, IconButton, useTheme, TextField, Container, Typography, Paper, Grid } from '@mui/material';
-import { LightModeOutlined, DarkModeOutlined, Menu as MenuIcon,Search, SettingsOutlined, ArrowDropDownOutlined } from '@mui/icons-material'
+import { Button, IconButton, useTheme, TextField, Typography, Paper, Grid } from '@mui/material';
+import { LightModeOutlined, DarkModeOutlined } from '@mui/icons-material'
 import { useDispatch } from 'react-redux'
-import SearchIcon from '@mui/icons-material/Search';
 import { setMode } from 'state'
 
 function LoginPage() {
