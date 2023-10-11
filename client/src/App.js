@@ -1,4 +1,3 @@
-
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material";
 import { useMemo } from "react";
@@ -9,8 +8,8 @@ import Dashboard from "scenes/dashboard"
 import Layout from "scenes/layout"
 import Students from "scenes/students";
 import Login from "scenes/login";
-
-
+import Groups from "scenes/groups";
+import StudentPage from "scenes/student-page";
 function App() {
 
   const mode = useSelector((state) => state.global.mode) 
@@ -23,11 +22,14 @@ function App() {
         <ThemeProvider theme={theme}>
           <CssBaseline />
         <Routes>
-            <Route path="/" element={<Login/>}/>
-            <Route path="/home" element={<Layout/>}>
-              {/* <Route path="" element={<Navigate to='/home' replace/>}/> */}
-              <Route path="dashboard" element={<Dashboard/>}/>
-              <Route path="students" element={<Students/>}/>
+            <Route element={<Layout/>}>
+              <Route path="/" element={<Login/>}/>
+              <Route path="/home" element={<Navigate to='/home/dashboard' replace/>}/>
+              <Route path="/home/dashboard" element={<Dashboard/>}/>
+              <Route path="/home/students" element={<Students/>}/>
+              <Route path="/home/students/:id" element={<StudentPage/>}/>
+              <Route path="/home/groups" element={<Groups/>}/>
+              
             </Route>
             </Routes>
         </ThemeProvider>

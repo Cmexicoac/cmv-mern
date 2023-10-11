@@ -43,12 +43,12 @@ const navItems = [
       {
         text: "Alumnos",
         icon: <PersonOutlined />,
-        path: "/students",
+        path: "home/students",
       },
       {
         text: "Grupos",
         icon: <GroupOutlined />,
-        path: "/groups",
+        path: "home/groups",
       },
     ],
   },
@@ -62,6 +62,18 @@ const studentIds = [
   "A00123416",
 ];
 
+
+const groupIds = [
+  "Grupo 1A",
+  "Grupo 1B",
+  "Grupo 2A",
+  "Grupo 2B",
+  "Grupo 3A",
+  "Grupo 3B",
+  "Grupo 4A",
+
+];
+
 const Sidebar = ({
   drawerWidth,
   isSidebarOpen,
@@ -71,13 +83,14 @@ const Sidebar = ({
   const { pathname } = useLocation();
   const [active, setActive] = useState("");
   const [showStudents, setShowStudents] = useState(false);
-  const [showNavItems, setShowNavItems] = useState(true);
+  const [showGroups, setShowGroups] = useState(false); // add showGroups state
+  const [navitemsActive, setNavitemsActive] = useState(false); // add navitemsActive state
   const navigate = useNavigate();
-  const location = useLocation();
   const theme = useTheme();
 
   useEffect(() => {
     setActive(pathname.substring(1));
+    setNavitemsActive(pathname === "/home/dashboard"); // set navitemsActive based on the current path
   }, [pathname]);
 
   const handleClick = (text, path) => {
@@ -86,25 +99,37 @@ const Sidebar = ({
       navigate(path);
       setActive(lcText);
     } else if (studentIds.includes(text)) {
-      navigate(`/students/${text}`);
+      navigate(`home/students/${text}`);
       setActive(lcText);
+      setShowStudents(true);
+    } else if (lcText === "grupos") { // handle Grupos item
+      navigate("/home/groups");
+      setActive(lcText);
+      setShowGroups(true);
+    } else if (groupIds.includes(text)) { // handle groupIds
+      navigate(`home/groups/${encodeURIComponent(text)}`); // navigate to the group page with the groupId parameter
+      setActive(lcText);
+      setShowGroups(true);
     } else {
       setActive(lcText);
     }
     if (lcText === "alumnos") {
       setShowStudents(true);
-      setShowNavItems(false); // hide navItems
     } else {
       setShowStudents(false);
-      setShowNavItems(true); // show navItems
+    }
+    if (lcText === "grupos" || groupIds.includes(text)) { // handle Grupos item and groupIds
+      setShowGroups(true);
+    } else {
+      setShowGroups(false);
     }
   };
 
   const handleBackClick = () => {
     setShowStudents(false);
-    setShowNavItems(true); // show navItems
+    setShowGroups(false); // set showGroups to false when the back button is clicked
     setActive("dashboard");
-    navigate("/dashboard");
+    navigate("/home");
   };
 
   return (
@@ -138,15 +163,12 @@ const Sidebar = ({
                 )}
               </FlexBetween>
             </Box>
-            <List>
-              {showNavItems && // conditionally render navItems
-                navItems.map(({ text, icon, children }) => {
+            {navitemsActive && ( // conditionally render navItems based on navitemsActive state
+              <List>
+                {navItems.map(({ text, icon, children }) => {
                   if (!icon) {
                     return (
-                      <Typography
-                        key={text}
-                        sx={{ m: "2.25rem 0 1rem 3rem" }}
-                      >
+                      <Typography key={text} sx={{ m: "2.25rem 0 1rem 3rem" }}>
                         {text}
                       </Typography>
                     );
@@ -243,26 +265,46 @@ const Sidebar = ({
                     </div>
                   );
                 })}
-              {showStudents && (
-                <List sx={{ pl: "3rem" }}>
-                  <ListItem disablePadding>
-                    <ListItemButton onClick={handleBackClick}>
-                      <ListItemIcon>
-                        <ArrowBackOutlined />
-                      </ListItemIcon>
-                      <ListItemText primary="Back" />
+              </List>
+            )}
+            {showStudents && (
+              <List sx={{ pl: "3rem" }}>
+                <ListItem disablePadding>
+                  <ListItemButton onClick={handleBackClick}>
+                    <ListItemIcon>
+                      <ArrowBackOutlined />
+                    </ListItemIcon>
+                    <ListItemText primary="Back" />
+                  </ListItemButton>
+                </ListItem>
+                {studentIds.map((id) => (
+                  <ListItem key={id} disablePadding>
+                    <ListItemButton onClick={() => handleClick(id)}>
+                      <ListItemText primary={id} />
                     </ListItemButton>
                   </ListItem>
-                  {studentIds.map((id) => (
-                    <ListItem key={id} disablePadding>
-                      <ListItemButton onClick={() => handleClick(id)}>
-                        <ListItemText primary={id} />
-                      </ListItemButton>
-                    </ListItem>
-                  ))}
-                </List>
-              )}
-            </List>
+                ))}
+              </List>
+            )}
+            {showGroups && (
+              <List sx={{ pl: "3rem" }}>
+                <ListItem disablePadding>
+                  <ListItemButton onClick={handleBackClick}>
+                    <ListItemIcon>
+                      <ArrowBackOutlined />
+                    </ListItemIcon>
+                    <ListItemText primary="Back" />
+                  </ListItemButton>
+                </ListItem>
+                {groupIds.map((id) => (
+                  <ListItem key={id} disablePadding>
+                    <ListItemButton onClick={() => handleClick(id)}>
+                      <ListItemText primary={id} />
+                    </ListItemButton>
+                  </ListItem>
+                ))}
+              </List>
+            )}
           </Box>
         </Drawer>
       )}

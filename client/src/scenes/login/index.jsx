@@ -30,8 +30,8 @@ function LoginPage() {
   };
 
   return (
-    <Grid container justifyContent="center" alignItems="center" style={{ minHeight: '100vh' }}>
-      <Grid item xs={12} sm={8} md={6} lg={4} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <Grid container justifyContent="center" alignItems="center" style={{ height: '100vh', width: '100vw' }}>
+  <Grid item xs={12} sm={8} md={6} lg={4} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Paper elevation={3} sx={{ padding: 3, width: '100%', marginBottom: "10px" }}>
           <Typography variant="h5">Iniciar Sesión</Typography>
           <form onSubmit={handleSubmit} style={{ width: '100%', marginTop: 1 }}>
@@ -74,12 +74,12 @@ function LoginPage() {
         <Grid container justifyContent="center" spacing={1}>
           <Grid item>
             <IconButton onClick={() => dispatch(setMode("dark"))}>
-                <DarkModeOutlined sx={{fontSize: "25px", color: theme.palette.mode == "dark" ? "white" : "gray"}}/>
+                <DarkModeOutlined sx={{fontSize: "25px", color: theme.palette.mode === "dark" ? "white" : "gray"}}/>
             </IconButton>
           </Grid>
           <Grid item>
             <IconButton onClick={() => dispatch(setMode())}>
-                <LightModeOutlined sx={{fontSize: "25px", color: theme.palette.mode == "dark" ? "gray" : "black"}}/>
+                <LightModeOutlined sx={{fontSize: "25px", color: theme.palette.mode === "dark" ? "gray" : "black"}}/>
             </IconButton>
           </Grid>
         </Grid>
