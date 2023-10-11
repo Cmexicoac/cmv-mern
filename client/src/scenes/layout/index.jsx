@@ -17,9 +17,6 @@ const Layout = () => {
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
         />
-            
-
-        
         <Box>
             <Navbar
             isSidebarOpen={isSidebarOpen}
