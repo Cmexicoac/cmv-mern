@@ -4,7 +4,7 @@ import { Button, IconButton, useTheme, TextField, Typography, Paper, Grid } from
 import { LightModeOutlined, DarkModeOutlined } from '@mui/icons-material'
 import { useDispatch } from 'react-redux'
 import { setMode } from 'state'
-
+import logocmv from 'assets/images/logocmv.png'
 function LoginPage() {
   const dispatch = useDispatch();
   const theme = useTheme();
@@ -31,7 +31,11 @@ function LoginPage() {
 
   return (
     <Grid container justifyContent="center" alignItems="center" style={{ height: '100vh', width: '100vw' }}>
+    
   <Grid item xs={12} sm={8} md={6} lg={4} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+  <div>
+    <img src={logocmv} alt="Logo CMV" style={{ width: '100%', maxWidth: '200px' }} />
+  </div>
         <Paper elevation={3} sx={{ padding: 3, width: '100%', marginBottom: "10px" }}>
           <Typography variant="h5">Iniciar Sesión</Typography>
           <form onSubmit={handleSubmit} style={{ width: '100%', marginTop: 1 }}>
