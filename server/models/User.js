@@ -30,16 +30,6 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-
-    grado: {
-        type: String,
-        required: true
-    },
-
-    numeroDeLista: {
-        type: Number,
-        required: true
-    },
     
     foto: {
         type: String

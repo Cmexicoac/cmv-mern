@@ -9,7 +9,7 @@ const morgan = require('morgan');
 const path = require('path');
 const { fileURLToPath } = require('url');
 const userRoutes = require('./routes/userRoutes');
-
+const alumnoRoutes = require('./routes/alumnoRoutes');
 // Configurations 
 
 dotenv.config();
@@ -26,6 +26,7 @@ app.use("/assets", express.static(path.join(__dirname, 'public/assets')));
 
 // include user routes
 app.use(userRoutes);
+app.use(alumnoRoutes);
 
 
 // File Storage config
@@ -58,3 +59,4 @@ mongoose.connect(process.env.MONGO_URL, {
 app.get('/', (req, res) => {
     res.send('Hola, mundo!');
 });
+

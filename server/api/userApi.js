@@ -46,8 +46,19 @@ const loginUser = async (req, res) => {
     }
 };
 
+const deleteAllData = async (req, res) => {
+    try {
+        await User.deleteMany({});
+        
+        res.status(200).json({ message: "Todos los datos han sido borrados." });
+    } catch (error) {
+        res.status(500).json({ message: "Error during data deletion", error: error.message });
+    }
+};
+
 module.exports = {
     registerUser,
     getUsers,
-    loginUser
+    loginUser,
+    deleteAllData
 };
