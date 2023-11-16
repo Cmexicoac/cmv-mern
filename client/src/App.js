@@ -11,6 +11,8 @@ import Login from "scenes/login";
 import Groups from "scenes/groups";
 import StudentPage from "scenes/student-page";
 import GroupPage from "scenes/group-page";
+import { AuthProvider } from "react-auth-kit";
+
 function App() {
 
   const mode = useSelector((state) => state.global.mode) 
@@ -22,6 +24,7 @@ function App() {
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           <CssBaseline />
+          
         <Routes>
             <Route element={<Layout/>}>
               <Route path="/" element={<Login/>}/>
