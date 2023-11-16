@@ -6,6 +6,9 @@ import { configureStore } from '@reduxjs/toolkit';
 import globalReducer from 'state';
 import { Provider } from 'react-redux';
 
+//auth kit
+import { AuthProvider } from "react-auth-kit";
+
 
 const store = configureStore({
   reducer: {

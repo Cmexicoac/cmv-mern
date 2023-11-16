@@ -1,9 +1,16 @@
-import React from 'react'
+import React from 'react';
+import Cookies from 'js-cookie';
 
 const Dashboard = () => {
-  return (
-    <div>Dashboard</div>
-  )
-}
+  // Retrieve the user's name and role from the cookies
+  const nombre = Cookies.get('nombre');
+  const role = Cookies.get('role');
 
-export default Dashboard
+  return (
+    <div>
+      Hola Profesor: {nombre}
+    </div>
+  );
+};
+
+export default Dashboard;
