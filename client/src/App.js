@@ -10,6 +10,7 @@ import Students from "scenes/students";
 import Login from "scenes/login";
 import Groups from "scenes/groups";
 import StudentPage from "scenes/student-page";
+import GroupPage from "scenes/group-page";
 function App() {
 
   const mode = useSelector((state) => state.global.mode) 
@@ -29,6 +30,7 @@ function App() {
               <Route path="/home/students" element={<Students/>}/>
               <Route path="/home/students/:id" element={<StudentPage/>}/>
               <Route path="/home/groups" element={<Groups/>}/>
+              <Route path="/home/groups/:id" element={<GroupPage/>}/>
               
             </Route>
             </Routes>

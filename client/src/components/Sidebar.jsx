@@ -67,11 +67,7 @@ const groupIds = [
   "Grupo 1A",
   "Grupo 1B",
   "Grupo 2A",
-  "Grupo 2B",
-  "Grupo 3A",
-  "Grupo 3B",
-  "Grupo 4A",
-
+  "Grupo 2B"
 ];
 
 const Sidebar = ({
