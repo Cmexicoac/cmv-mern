@@ -102,7 +102,8 @@ function LoginPage() {
             >
               Iniciar Sesión
             </Button>
-          </form>
+          </form> 
+          <h1>prueba</h1>
         </Paper>
         <Grid container justifyContent="center" spacing={1}>
           <Grid item>
