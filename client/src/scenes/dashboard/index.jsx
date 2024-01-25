@@ -7,9 +7,10 @@ const Dashboard = () => {
   const role = Cookies.get('role');
 
   return (
-    <div>
+    <div style={{ fontSize: '35px', fontFamily: 'Calibri' }}>
       Hola Profesor: {nombre}
     </div>
+    
   );
 };
 

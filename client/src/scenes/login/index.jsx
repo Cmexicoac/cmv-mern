@@ -65,7 +65,7 @@ function LoginPage() {
           <img src={logocmv} alt="Logo CMV" style={{ width: '100%', maxWidth: '200px' }} />
         </div>
         <Paper elevation={3} sx={{ padding: 3, width: '100%', marginBottom: "10px" }}>
-          <Typography variant="h5" sx={{marginLeft : 10 }}>Cambiando México con Valores, A.C.</Typography>
+          <Typography variant="h5" sx={{marginLeft : 10 }}> Cambiando México con Valores, A.C.</Typography>
           <form onSubmit={handleSubmit} style={{ width: '100%', marginTop: 7 }}>
             <TextField
               variant="outlined"

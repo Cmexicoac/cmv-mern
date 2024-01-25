@@ -5,6 +5,8 @@ import { useSelector } from 'react-redux';
 import Navbar from "components/Navbar"
 import Sidebar from "components/Sidebar"
 
+import logocmv from 'assets/images/logocmv.png'
+
 const Layout = () => {
   const isNonMobile = useMediaQuery("(min-width: 600px)");
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -14,13 +16,16 @@ const Layout = () => {
 
   return (
     <Box display={isNonMobile ? "flex" : "block"} width="100%" height="100%">
-  {isSidebarVisible && (
+  {isSidebarVisible && ( 
     <Sidebar
       isNonMobile={isNonMobile}
       drawerWidth="250px"
       isSidebarOpen={true}
     />
   )}
+  <div>
+    <img src={logocmv} alt="Logo CMV" style={{ width: '110%', maxWidth: '100px' }}  />
+  </div>
   <Box width="100%"> {/* Ensure the parent Box takes full width */}
     {!isLoginPage && (
       <Navbar
