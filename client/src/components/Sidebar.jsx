@@ -29,11 +29,13 @@ import {
   GroupOutlined,
   PersonOutlined,
   ArrowBackOutlined,
+  SportsEsportsOutlined,
 } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "./FlexBetween";
 import profileImage from "assets/images/profile.jpeg";
+import logocmv from 'assets/images/logocmv.png'
 
 const navItems = [
   {
@@ -49,6 +51,11 @@ const navItems = [
         text: "Grupos",
         icon: <GroupOutlined />,
         path: "home/groups",
+      },
+      {
+        text: "Juegos",
+        icon: <SportsEsportsOutlined />,
+        path: "home/games",
       },
     ],
   },
@@ -150,8 +157,9 @@ const Sidebar = ({
             <Box m="1.5rem 2rem 2rem 3rem">
               <FlexBetween color={theme.palette.secondary.main}>
                 <Box display="flex" alignItems="center" gap="0.5rem">
-                  <Typography variant="h4">CMV</Typography>
+                  <Typography variant="h2">CMV</Typography>
                 </Box>
+                <img src={logocmv} alt="Logo CMV" style={{ width: '80%', maxWidth: '70px', objectFit: 'cover', height: '45px'}}  />
                 {isNonMobile ? null : (
                   <IconButton onClick={() => setIsSidebarOpen(false)}>
                     <ChevronLeft />
