@@ -11,6 +11,7 @@ import Login from "scenes/login";
 import Groups from "scenes/groups";
 import StudentPage from "scenes/student-page";
 import GroupPage from "scenes/group-page";
+import Games from "scenes/games";
 import { AuthProvider } from "react-auth-kit";
 
 function App() {
@@ -34,6 +35,8 @@ function App() {
               <Route path="/home/students/:id" element={<StudentPage/>}/>
               <Route path="/home/groups" element={<Groups/>}/>
               <Route path="/home/groups/:id" element={<GroupPage/>}/>
+              <Route path="/home/games" element={<Games/>}/>
+               <Route path="/home/games/game1" element={<mGame/>}/> {/* Rename game */}
               
             </Route>
             </Routes>
