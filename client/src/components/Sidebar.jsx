@@ -156,10 +156,10 @@ const Sidebar = ({
           <Box width="100%">
             <Box m="1.5rem 2rem 2rem 3rem">
               <FlexBetween color={theme.palette.secondary.main}>
-                <Box display="flex" alignItems="center" gap="0.5rem">
+                <Box display="flex" alignItems="center" gap="0.5rem" sx={{ position: 'relative', left: -10 }}>
                   <Typography variant="h2">CMV</Typography>
                 </Box>
-                <img src={logocmv} alt="Logo CMV" style={{ width: '80%', maxWidth: '70px', objectFit: 'cover', height: '45px'}}  />
+                <img src={logocmv} alt="Logo CMV" style={{ width: '80%', maxWidth: '70px', objectFit: 'cover', height: '45px', position: 'relative', left: -10, top: -5 }}/>
                 {isNonMobile ? null : (
                   <IconButton onClick={() => setIsSidebarOpen(false)}>
                     <ChevronLeft />
@@ -278,7 +278,7 @@ const Sidebar = ({
                     <ListItemIcon>
                       <ArrowBackOutlined />
                     </ListItemIcon>
-                    <ListItemText primary="Back" />
+                    <ListItemText primary="Atrás" />
                   </ListItemButton>
                 </ListItem>
                 {studentIds.map((id) => (

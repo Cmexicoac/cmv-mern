@@ -4,10 +4,10 @@ import { useTheme } from '@mui/material/styles';
 import Chart from 'chart.js/auto';
 import { Line } from 'react-chartjs-2';
 const students = [
-  { id: 1, name: 'John Doe', grade: 'A', status: 'Active', gameScore: 85, timePlayed: 25, activeInGame: true },
-  { id: 2, name: 'Jane Smith', grade: 'B', status: 'Inactive', gameScore: 70, timePlayed: 15, activeInGame: false },
-  { id: 3, name: 'Bob Johnson', grade: 'C', status: 'Active', gameScore: 60, timePlayed: 30, activeInGame: true },
-  { id: 4, name: 'Alice Williams', grade: 'A', status: 'Inactive', gameScore: 90, timePlayed: 40, activeInGame: false },
+  { id: 1, name: 'John Doe', grade: 'A', status: 'Activo', gameScore: 85, timePlayed: 25, activeInGame: true },
+  { id: 2, name: 'Jane Smith', grade: 'B', status: 'Inactivo', gameScore: 70, timePlayed: 15, activeInGame: false },
+  { id: 3, name: 'Bob Johnson', grade: 'C', status: 'Activo', gameScore: 60, timePlayed: 30, activeInGame: true },
+  { id: 4, name: 'Alice Williams', grade: 'A', status: 'Inactivo', gameScore: 90, timePlayed: 40, activeInGame: false },
 ];
 
 // Generate random game score data for each student over time
@@ -31,7 +31,7 @@ const createPieChart = (canvas, student, theme) => {
   }
 
   const chartData = {
-    labels: ['Game Score', 'Time Played', 'Active in Game'],
+    labels: ['Puntuación', 'Tiempo jugado', 'Activo en el juego'],
     datasets: [{
       data: [student.gameScore, student.timePlayed, student.activeInGame ? 1 : 0],
       backgroundColor: [
@@ -49,7 +49,7 @@ const createPieChart = (canvas, student, theme) => {
 };
 
 const lineChartData = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+  labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'],
   datasets: students.map((student) => ({
     label: student.name,
     fill: false,
@@ -93,9 +93,9 @@ const Students = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}>Name</TableCell>
-              <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}>Grade</TableCell>
-              <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}>Status</TableCell>
+              <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}>Nombre</TableCell>
+              <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}>Calificación</TableCell>
+              <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}>Estatus</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

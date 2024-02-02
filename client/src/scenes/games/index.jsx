@@ -4,9 +4,6 @@ import { Card, CardContent, CardMedia, CardActionArea, Typography, Container, Bo
 import Cookies from 'js-cookie';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useNavigate } from "react-router-dom";
-import { positions } from '@mui/system';
-
-
 
 const Games = () => {
   const [windowSize, setWindowSize] = useState(getWindowSize());
@@ -30,28 +27,27 @@ const Games = () => {
   }, []);
 
   return (
-    <Container>
+    <Container maxWidth='sm'>
       <Box sx={{ position: 'absolute', left: 300, top: 100, width: (windowSize.innerWidth - 360)}}>
         <Grid container spacing={4}>
-          {/* Add Grid item for each game. Change info, image and route */}
+        {/* Add Grid item for each game. Change info, image and route */}
           <Grid item xs={4}>
               <Card sx={{ 
                 maxWidth: 800 
                 }}>
-                <CardActionArea onClick={() => navigate('/home/games/game1')}>   {/* Game path */}
+                <CardActionArea onClick={() => navigate('/home/games/colon')}>   {/* Game path */}
                   <CardMedia
                     component="img"
-                    height="200"
-                    image='https://picsum.photos/800/600?random=1'
-                    alt="Logo"
+                    height="250"
+                    image={require('assets/images/juegos/colon.png')}
+                    alt="Colón"
                   />
                   <CardContent>
                     <Typography gutterBottom variant="h3" component="div">
-                      Lorem Ipsum
+                      En búsqueda del Nuevo Mundo
                     </Typography>
                     <Typography variant="body1" color="text.secondary">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                      Curabitur pretium lectus in lacus interdum, a tempus sem ornare.
+                      Sé parte de la tripulación de Cristobal Colón y explora el mundo acompañándolo en sus diferentes viajes.
                     </Typography>
                   </CardContent>
                 </CardActionArea>
@@ -61,20 +57,19 @@ const Games = () => {
             <Card sx={{ 
               maxWidth: 800 
               }}>
-              <CardActionArea onClick={() => navigate('/home')}>
+              <CardActionArea onClick={() => navigate('/home/games/conquista')}>
                 <CardMedia
                   component="img"
-                  height="200"
-                  image='https://picsum.photos/800/600?random=2'
-                  alt="Logo"
+                  height="250"
+                  image={require('assets/images/juegos/conquista.png')}
+                  alt="Conquista"
                 />
                 <CardContent>
                   <Typography gutterBottom variant="h3" component="div">
-                    Lorem Ipsum
+                    La Conquista
                   </Typography>
                   <Typography variant="body1" color="text.secondary">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                    Curabitur pretium lectus in lacus interdum, a tempus sem ornare.
+                    Revive algunos de los eventos más importantes de la conquista de México junto a Hernan Cortéz.
                   </Typography>
                 </CardContent>
               </CardActionArea>
@@ -84,20 +79,19 @@ const Games = () => {
             <Card sx={{ 
               maxWidth: 800 
               }}>
-              <CardActionArea onClick={() => navigate('/home')}>
+              <CardActionArea onClick={() => navigate('/home/games/cronologia')}>
                 <CardMedia
                   component="img"
-                  height="200"
-                  image='https://picsum.photos/800/600?random=3'
-                  alt="Logo"
+                  height="250"
+                  image={require('assets/images/juegos/cronologia.png')}
+                  alt="Cronos"
                 />
                 <CardContent>
                   <Typography gutterBottom variant="h3" component="div">
-                    Lorem Ipsum
+                    Cronología Prehispánica
                   </Typography>
                   <Typography variant="body1" color="text.secondary">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                    Curabitur pretium lectus in lacus interdum, a tempus sem ornare.
+                    Aprende sobre las civilizaciones prehispánicas mexicanas y algunos otros eventos importantes en la historia de México.
                   </Typography>
                 </CardContent>
               </CardActionArea>
@@ -107,89 +101,19 @@ const Games = () => {
             <Card sx={{ 
               maxWidth: 800 
               }}>
-              <CardActionArea onClick={() => navigate('/home')}>
+              <CardActionArea onClick={() => navigate('/home/games/preguntas')}>
                 <CardMedia
                   component="img"
-                  height="200"
-                  image='https://picsum.photos/800/600?random=4'
-                  alt="Logo"
+                  height="250"
+                  image={require('assets/images/juegos/preguntas.png')}
+                  alt="Preguntas"
                 />
                 <CardContent>
                   <Typography gutterBottom variant="h3" component="div">
-                    Lorem Ipsum
+                    Preguntas y Respuestas
                   </Typography>
                   <Typography variant="body1" color="text.secondary">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                    Curabitur pretium lectus in lacus interdum, a tempus sem ornare.
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </Grid>
-          <Grid item xs={4}>
-            <Card sx={{ 
-              maxWidth: 800 
-              }}>
-              <CardActionArea onClick={() => navigate('/home')}>
-                <CardMedia
-                  component="img"
-                  height="200"
-                  image='https://picsum.photos/800/600?random=5'
-                  alt="Logo"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h3" component="div">
-                    Lorem Ipsum
-                  </Typography>
-                  <Typography variant="body1" color="text.secondary">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                    Curabitur pretium lectus in lacus interdum, a tempus sem ornare.
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </Grid>
-          <Grid item xs={4}>
-            <Card sx={{ 
-              maxWidth: 800 
-              }}>
-              <CardActionArea onClick={() => navigate('/home')}>
-                <CardMedia
-                  component="img"
-                  height="200"
-                  image='https://picsum.photos/800/600?random=6'
-                  alt="Logo"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h3" component="div">
-                    Lorem Ipsum
-                  </Typography>
-                  <Typography variant="body1" color="text.secondary">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                    Curabitur pretium lectus in lacus interdum, a tempus sem ornare.
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </Grid>
-          <Grid item xs={4}>
-            <Card sx={{ 
-              maxWidth: 800 
-              }}>
-              <CardActionArea onClick={() => navigate('/home')}>
-                <CardMedia
-                  component="img"
-                  height="200"
-                  image='https://picsum.photos/800/600?random=7'
-                  alt="Logo"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h3" component="div">
-                    Lorem Ipsum
-                  </Typography>
-                  <Typography variant="body1" color="text.secondary">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                    Curabitur pretium lectus in lacus interdum, a tempus sem ornare.
+                    Descubre qué tanto sabes sobre México en este quiz lleno de preguntas de todo tipo.
                   </Typography>
                 </CardContent>
               </CardActionArea>
