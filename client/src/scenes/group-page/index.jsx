@@ -13,10 +13,10 @@ import GamepadIcon from '@mui/icons-material/Gamepad';
 import StarIcon from '@mui/icons-material/Star';
 
 const students = [
-  { id: 1, name: 'John Doe', grade: 'A', status: 'Active', gameScore: 85, timePlayed: 25, activeInGame: true, gamePlaying: "Cristóbal Colón" },
-  { id: 2, name: 'Jane Smith', grade: 'B', status: 'Inactive', gameScore: 70, timePlayed: 15, activeInGame: false, gamePlaying: "No jugando" },
-  { id: 3, name: 'Bob Johnson', grade: 'C', status: 'Active', gameScore: 60, timePlayed: 30, activeInGame: true, gamePlaying: "Preguntas y Respuestas" },
-  { id: 4, name: 'Alice Williams', grade: 'A', status: 'Inactive', gameScore: 90, timePlayed: 40, activeInGame: false, gamePlaying: "No jugando" },
+  { id: 1, name: 'John Doe', grade: 'A', status: 'Activo', gameScore: 85, timePlayed: 25, activeInGame: true, gamePlaying: "En búsqueda del Nuevo Mundo" },
+  { id: 2, name: 'Jane Smith', grade: 'B', status: 'Inactivo', gameScore: 70, timePlayed: 15, activeInGame: false, gamePlaying: "No jugando" },
+  { id: 3, name: 'Bob Johnson', grade: 'C', status: 'Activo', gameScore: 60, timePlayed: 30, activeInGame: true, gamePlaying: "Preguntas y Respuestas" },
+  { id: 4, name: 'Alice Williams', grade: 'A', status: 'Inactivo', gameScore: 90, timePlayed: 40, activeInGame: false, gamePlaying: "No jugando" },
 ]
 
 const GroupPage = () => {
@@ -117,9 +117,9 @@ const GroupPage = () => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}>Name</TableCell>
-                  <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}>Grade</TableCell>
-                  <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}>Status</TableCell>
+                  <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}>Nombre</TableCell>
+                  <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}>Calificación</TableCell>
+                  <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}>Estatus</TableCell>
                   <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}>Juego Jugando</TableCell>
                 </TableRow>
               </TableHead>

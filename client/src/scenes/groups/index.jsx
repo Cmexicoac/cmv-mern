@@ -57,9 +57,9 @@ const Groups = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}>Name</TableCell>
-              <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}>Average Grade</TableCell>
-              <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}>Students Playing</TableCell>
+              <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}>Grupo</TableCell>
+              <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}>Calificación Promedio</TableCell>
+              <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}>Estudiantes Jugando</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

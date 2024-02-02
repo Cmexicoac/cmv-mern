@@ -4,6 +4,11 @@ import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { themeSettings } from "theme";
+import Games from "scenes/games";
+import Colon from "scenes/colon";
+import Conquista from "scenes/conquista";
+import Cronologia from "scenes/cronología";
+import Preguntas from "scenes/preguntas";
 import Dashboard from "scenes/dashboard"
 import Layout from "scenes/layout"
 import Students from "scenes/students";
@@ -11,7 +16,6 @@ import Login from "scenes/login";
 import Groups from "scenes/groups";
 import StudentPage from "scenes/student-page";
 import GroupPage from "scenes/group-page";
-import Games from "scenes/games";
 import { AuthProvider } from "react-auth-kit";
 
 function App() {
@@ -36,7 +40,11 @@ function App() {
               <Route path="/home/groups" element={<Groups/>}/>
               <Route path="/home/groups/:id" element={<GroupPage/>}/>
               <Route path="/home/games" element={<Games/>}/>
-               <Route path="/home/games/game1" element={<mGame/>}/> {/* Rename game */}
+              <Route path="/home/games/colon" element={<Colon/>}/>
+              <Route path="/home/games/conquista" element={<Conquista/>}/>
+              <Route path="/home/games/cronologia" element={<Cronologia/>}/>
+              <Route path="/home/games/preguntas" element={<Preguntas/>}/>
+              <Route path="/home/games/cronologia" element={<Cronologia/>}/>
               
             </Route>
             </Routes>
