@@ -10,6 +10,8 @@ const path = require('path');
 const { fileURLToPath } = require('url');
 const userRoutes = require('./routes/userRoutes');
 const alumnoRoutes = require('./routes/alumnoRoutes');
+const teacherRoutes = require('./routes/teacherRoutes');
+const groupRoutes = require('./routes/groupRoutes');
 // Configurations 
 
 dotenv.config();
@@ -33,6 +35,8 @@ const JwtStrategy = require('passport-jwt').Strategy;
 // include user routes
 app.use(userRoutes);
 app.use(alumnoRoutes);
+app.use(teacherRoutes);
+app.use(groupRoutes);
 
 
 // File Storage config
