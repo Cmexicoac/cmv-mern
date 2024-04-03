@@ -24,4 +24,18 @@ router.post('/createGroup', async (req, res) => {
     }
 });
 
+router.get('/getAllGroups', async (req, res) => {
+    try {
+        const groups = await Group.find();
+        res.status(200).json(groups);
+    } catch (error) {
+        res.status(500).json({ error: error.toString() });
+    }
+});
+
+// function to find a group by its id
+const findGroupById = (teacher, groupId) => {
+    return teacher.groups.find(group => group._id === groupId);
+};
+
 module.exports = router;
