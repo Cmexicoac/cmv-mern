@@ -1,18 +1,18 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const groupSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    // other properties...
-    teacher: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Teacher',
-        required: true
-    }
+  name: {
+    type: String,
+    required: true,
+  },
+  // other properties...
+  teacher: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Teacher",
+    required: true,
+  },
 });
 
-const Group = mongoose.model('Group', groupSchema);
+const group = mongoose.models.group || mongoose.model("group", groupSchema);
 
-module.exports = Group;
+module.exports = group;
