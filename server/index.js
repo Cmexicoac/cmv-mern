@@ -36,7 +36,7 @@ const JwtStrategy = require("passport-jwt").Strategy;
 app.use(userRoutes);
 app.use(alumnoRoutes);
 app.use(teacherRoutes);
-app.use("/api", groupRoutes);
+app.use(groupRoutes);
 
 // File Storage config
 

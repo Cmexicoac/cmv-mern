@@ -13,7 +13,7 @@ const createTeacher = async (req, res) => {
 
 const getTeachers = async (req, res) => {
   try {
-    const teachers = await Teacher.find({}).populate("groups", "name _id");
+    const teachers = await Teacher.find({});
     res.send(teachers);
   } catch (error) {
     res.status(500).send(error);

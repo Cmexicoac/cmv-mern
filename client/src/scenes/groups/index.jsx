@@ -1,15 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import Chart from 'chart.js/auto';
 import { Line } from 'react-chartjs-2';
-
-const groups = [
-  { id: 1, name: '1A', avgGrade: 'A', studentsPlaying: 10, aprobados: 15, reprobados: 15,},
-  { id: 2, name: '1B', avgGrade: 'B', studentsPlaying: 5, aprobados: 14, reprobados: 16,},
-  { id: 3, name: '2A', avgGrade: 'C', studentsPlaying: 23, aprobados: 10, reprobados: 20,},
-  { id: 4, name: '2B', avgGrade: 'A', studentsPlaying: 15, aprobados: 25, reprobados: 5,}
-];
 
 const createPieChart = (canvas, group, theme) => {
   const existingChart = Chart.getChart(canvas);
@@ -36,7 +30,21 @@ const createPieChart = (canvas, group, theme) => {
 };
 
 const Groups = () => {
+  const [groups, setGroups] = useState([]);
   const theme = useTheme();
+
+  useEffect(() => {
+    const fetchGroups = async () => {
+      try {
+        const response = await axios.get('http://localhost:3001/api/getGroupsByTeacherId/660cd023188073f19a417fca');
+        setGroups(response.data);
+      } catch (error) {
+        console.error('Error fetching groups:', error);
+      }
+    };
+
+    fetchGroups();
+  }, []);
 
   useEffect(() => {
     groups.forEach((group) => {
@@ -45,7 +53,7 @@ const Groups = () => {
         createPieChart(canvas, group, theme);
       }
     });
-  }, [theme]);
+  }, [groups, theme]);
 
   return (
     <>

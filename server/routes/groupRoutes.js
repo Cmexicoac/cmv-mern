@@ -3,11 +3,10 @@ const router = express.Router();
 const Group = require("../models/Group.js");
 const Teacher = require("../models/teacher.js");
 
-router.post("/createGroup", async (req, res) => {
+router.post("/api/createGroup", async (req, res) => {
   const { groupName, teacherId } = req.body;
-
-  // Create a new group
-  const group = new this.getroup({ name: groupName, teacher: teacherId });
+  const group = new Group({ name: groupName, teacher: teacherId }); // Use new Group(...) instead of new this.getroup(...)
+  // ...
 
   try {
     // Save the group
@@ -24,7 +23,7 @@ router.post("/createGroup", async (req, res) => {
   }
 });
 
-router.get("/getAllGroups", async (req, res) => {
+router.get("/api/getAllGroups", async (req, res) => {
   try {
     const groups = await Group.find();
     res.status(200).json(groups);
@@ -34,7 +33,7 @@ router.get("/getAllGroups", async (req, res) => {
 });
 
 // find a group by teacher id
-router.get("/getGroupsByTeacherId/:teacherId", async (req, res) => {
+router.get("/api/getGroupsByTeacherId/:teacherId", async (req, res) => {
   try {
     const groups = await Group.find({ teacher: req.params.teacherId });
     res.status(200).json(groups);
@@ -44,7 +43,7 @@ router.get("/getGroupsByTeacherId/:teacherId", async (req, res) => {
 });
 
 //delete group by id
-router.delete("/deleteGroup/:id", async (req, res) => {
+router.delete("/api/deleteGroup/:id", async (req, res) => {
   try {
     const group = await Group.findByIdAndDelete(req.params.id);
     if (!group) {

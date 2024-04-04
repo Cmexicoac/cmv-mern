@@ -5,7 +5,22 @@ const groupSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  // other properties...
+  avgGrade: {
+    type: String,
+    default: 'A',
+  },
+  studentsPlaying: {
+    type: Number,
+    default: 10,
+  },
+  aprobados: {
+    type: Number,
+    default: 20,
+  },
+  reprobados: {
+    type: Number,
+    default: 10,
+  },
   teacher: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Teacher",
