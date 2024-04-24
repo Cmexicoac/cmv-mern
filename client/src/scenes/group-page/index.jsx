@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, Grid, List, ListItem, ListItemAvatar, ListItemText, Typography, Button, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Avatar } from '@mui/material';
@@ -12,13 +12,6 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import GamepadIcon from '@mui/icons-material/Gamepad';
 import StarIcon from '@mui/icons-material/Star';
 
-const students = [
-  { id: 1, name: 'John Doe', grade: 'A', status: 'Activo', gameScore: 85, timePlayed: 25, activeInGame: true, gamePlaying: "En búsqueda del Nuevo Mundo" },
-  { id: 2, name: 'Jane Smith', grade: 'B', status: 'Inactivo', gameScore: 70, timePlayed: 15, activeInGame: false, gamePlaying: "No jugando" },
-  { id: 3, name: 'Bob Johnson', grade: 'C', status: 'Activo', gameScore: 60, timePlayed: 30, activeInGame: true, gamePlaying: "Preguntas y Respuestas" },
-  { id: 4, name: 'Alice Williams', grade: 'A', status: 'Inactivo', gameScore: 90, timePlayed: 40, activeInGame: false, gamePlaying: "No jugando" },
-]
-
 const GroupPage = () => {
   const theme = useTheme();
   const params = useParams();
@@ -26,13 +19,26 @@ const GroupPage = () => {
   const [group, setGroup] = useState({
     groupName: params.id,
     averageGrade: "C",
-    students: students,
-    studentNumber: students.length,
+    students: [],
+    studentNumber: 0,
     schoolGrade: 'Sexto Grado',
     bestGame: 'Cristóbal Colón',
     worstGame: 'Preguntas y respuestas',
     bestStudent: "John Doe",
   });
+
+  useEffect(() => {
+    fetch('http://localhost:3001/api/getAlumnos')  // replace with your actual API endpoint
+      .then(response => response.json())
+      .then(data => {
+        setGroup(prevState => ({
+          ...prevState,
+          students: data,
+          studentNumber: data.length
+        }));
+      })
+      .catch(error => console.error('Error:', error));
+  }, []);
 
   return (
     <>

@@ -26,6 +26,10 @@ const groupSchema = new mongoose.Schema({
     ref: "Teacher",
     required: true,
   },
+  alumnos: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Alumno",
+  }],
 });
 
 const group = mongoose.models.group || mongoose.model("group", groupSchema);
