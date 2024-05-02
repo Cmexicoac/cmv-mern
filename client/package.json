@@ -25,9 +25,11 @@
     "react-chartjs-2": "^5.2.0",
     "react-datepicker": "^4.18.0",
     "react-dom": "^18.2.0",
+    "react-helmet": "^6.1.0",
     "react-redux": "^8.1.2",
     "react-router-dom": "^6.16.0",
     "react-scripts": "5.0.1",
+    "shebang-regex": "^4.0.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -53,5 +55,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/babel__generator": "^7.6.8"
   }
 }
