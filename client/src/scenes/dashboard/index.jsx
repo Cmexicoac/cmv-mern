@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const GroupList = () => {
   const [groups, setGroups] = useState([]);
+  const userId = Cookies.get('id');
 
   useEffect(() => {
     const fetchGroups = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/api/getGroupsByTeacherId/660cd023188073f19a417fca');
+        const response = await axios.get(`http://localhost:3001/api/getGroupsByTeacherId/${userId}`);
         setGroups(response.data);
       } catch (error) {
         console.error('Error fetching groups:', error);
@@ -19,7 +21,7 @@ const GroupList = () => {
 
   return (
     <div>
-      <h2>Group List</h2>
+      <h2>User ID: {userId}</h2>
       <ul>
         {groups.map((group) => (
           <li key={group._id}>

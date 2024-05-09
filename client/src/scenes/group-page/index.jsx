@@ -12,7 +12,11 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import GamepadIcon from '@mui/icons-material/Gamepad';
 import StarIcon from '@mui/icons-material/Star';
 
+import Cookies from 'js-cookie';
+
 const GroupPage = () => {
+  const userId = Cookies.get('id');
+
   const theme = useTheme();
   const params = useParams();
 
@@ -133,7 +137,7 @@ const GroupPage = () => {
                 {group.students.map((student) => (
                   <TableRow key={student.id} style={{ backgroundColor: theme.palette.background.default }}>
                     <TableCell><Link to={`/home/students/${student.name}`}>{student.name}</Link></TableCell>
-                    <TableCell>{student.grade}</TableCell>
+                    <TableCell>{student.grado}</TableCell>
                     <TableCell>{student.status}</TableCell>
                     <TableCell>{student.gamePlaying}</TableCell>
                   </TableRow>
