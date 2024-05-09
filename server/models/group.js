@@ -5,12 +5,31 @@ const groupSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  // other properties...
+  avgGrade: {
+    type: String,
+    default: 'A',
+  },
+  studentsPlaying: {
+    type: Number,
+    default: 10,
+  },
+  aprobados: {
+    type: Number,
+    default: 20,
+  },
+  reprobados: {
+    type: Number,
+    default: 10,
+  },
   teacher: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Teacher",
     required: true,
   },
+  alumnos: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Alumno",
+  }],
 });
 
 const group = mongoose.models.group || mongoose.model("group", groupSchema);

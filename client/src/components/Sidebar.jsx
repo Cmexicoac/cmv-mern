@@ -36,6 +36,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "./FlexBetween";
 import profileImage from "assets/images/profile.jpeg";
 import logocmv from 'assets/images/logocmv.png'
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const navItems = [
   {
@@ -69,14 +71,6 @@ const studentIds = [
   "A00123416",
 ];
 
-
-const groupIds = [
-  "Grupo 1A",
-  "Grupo 1B",
-  "Grupo 2A",
-  "Grupo 2B"
-];
-
 const Sidebar = ({
   drawerWidth,
   isSidebarOpen,
@@ -90,6 +84,25 @@ const Sidebar = ({
   const [navitemsActive, setNavitemsActive] = useState(false); // add navitemsActive state
   const navigate = useNavigate();
   const theme = useTheme();
+
+  const [groups, setGroups] = useState([]);
+  const [groupIds, setGroupIds] = useState([]);
+  const userId = Cookies.get('id');
+
+  useEffect(() => {
+    const fetchGroups = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3001/api/getGroupsByTeacherId/${userId}`);
+        setGroups(response.data);
+        const groupIds = response.data.map(group => group.name); // create groupIds array
+        setGroupIds(groupIds); // set the state
+      } catch (error) {
+        console.error('Error fetching groups:', error);
+      }
+    };
+  
+    fetchGroups();
+  }, []);
 
   useEffect(() => {
     setActive(pathname.substring(1));

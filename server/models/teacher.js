@@ -11,7 +11,7 @@ const TeacherSchema = User.discriminator(
         ref: "Group",
       },
     ],
-  })
+  }) 
 );
 
 module.exports = TeacherSchema;

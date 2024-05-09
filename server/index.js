@@ -26,7 +26,6 @@ app.use(cors());
 //store images locally for now... change to s3 later
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
 
-app.use("/api", groupRoutes);
 // JWT and Passport setup
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
@@ -36,7 +35,7 @@ const JwtStrategy = require("passport-jwt").Strategy;
 app.use(userRoutes);
 app.use(alumnoRoutes);
 app.use(teacherRoutes);
-app.use("/api", groupRoutes);
+app.use(groupRoutes);
 
 // File Storage config
 

@@ -1,47 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
-const TeacherList = () => {
-  const [teachers, setTeachers] = useState([]);
+const GroupList = () => {
+  const [groups, setGroups] = useState([]);
+  const userId = Cookies.get('id');
 
   useEffect(() => {
-    const fetchTeachers = async () => {
+    const fetchGroups = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/api/getTeacher');
-        setTeachers(response.data);
+        const response = await axios.get(`http://localhost:3001/api/getGroupsByTeacherId/${userId}`);
+        setGroups(response.data);
       } catch (error) {
-        console.error('Error fetching teachers:', error);
+        console.error('Error fetching groups:', error);
       }
     };
 
-    fetchTeachers();
+    fetchGroups();
   }, []);
-
-  const findGroupById = (teacher, groupId) => {
-    return teacher.groups.find(group => group._id === groupId);
-  };
-
-  const displayGroup = (group) => {
-    return group ? group.name : 'Group not found';
-  };
 
   return (
     <div>
-      <h2>Teacher List</h2>
+      <h2>User ID: {userId}</h2>
       <ul>
-        {teachers.map((teacher) => (
-          <li key={teacher._id}>
-            {teacher.nombre} - {teacher.email} - {teacher.matricula}
-            <ul>
-              {teacher.groups && teacher.groups.map((group) => (
-                <li key={group._id}>{displayGroup(findGroupById(teacher, group._id))}</li>
-              ))}
-            </ul>
-          </li> 
+        {groups.map((group) => (
+          <li key={group._id}>
+            {group.name} - {group._id}
+          </li>
         ))}
       </ul>
     </div>
   );
 };
 
-export default TeacherList;
+export default GroupList;

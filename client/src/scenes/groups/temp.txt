@@ -1,0 +1,7 @@
+
+const groups = [
+  { id: 1, name: '1A', avgGrade: 'A', studentsPlaying: 10, aprobados: 15, reprobados: 15,},
+  { id: 2, name: '1B', avgGrade: 'B', studentsPlaying: 5, aprobados: 14, reprobados: 16,},
+  { id: 3, name: '2A', avgGrade: 'C', studentsPlaying: 23, aprobados: 10, reprobados: 20,},
+  { id: 4, name: '2B', avgGrade: 'A', studentsPlaying: 15, aprobados: 25, reprobados: 5,}
+];
