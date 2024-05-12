@@ -9,10 +9,10 @@ function Juego() {
   const fullscreenButtonRef = useRef(null);
 
   const {unityProvider} = useUnityContext({
-    loaderUrl: "/public.loader.js",
-    dataUrl: "/public.data",
-    frameworkUrl: "/public.framework.js",
-    codeUrl: "/public.wasm",
+    loaderUrl: "Build/public.loader.js",
+    dataUrl: "Build/public.data",
+    frameworkUrl: "Build/public.framework.js",
+    codeUrl: "Build/public.wasm",
   });
 
   useEffect(() => {
