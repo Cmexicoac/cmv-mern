@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { Unity, useUnityContext } from "react-unity-webgl";
 import React from "react";
-import "./TemplateData/style.css";
 
 const CenteredContainer = styled.div`
   display: flex;
@@ -12,10 +11,10 @@ const CenteredContainer = styled.div`
 
 export function Juego() {
   const { unityProvider } = useUnityContext({
-    loaderUrl: "Build/public.loader.js",
-    dataUrl: "Build/public.data",
-    frameworkUrl: "Build/public.framework.js",
-    codeUrl: "Build/public.wasm",
+    loaderUrl: "/juegos/Build/Unity.loader.js",
+    dataUrl: "/juegos/Build/Unity.data",
+    frameworkUrl: "/juegos/Build/Unity.framework.js",
+    codeUrl: "/juegos/Build/Unity.wasm",
   });
 
   return (

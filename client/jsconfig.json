@@ -2,5 +2,5 @@
     "compilerOptions": {
         "baseUrl": "src"
     },
-    "include": ["src", "src/scenes/adivina quien/Build"]
+    "include": ["src", "public/juegos/Build"]
 }
