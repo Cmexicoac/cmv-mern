@@ -1,24 +1,26 @@
 import styled from "styled-components";
 import { Unity, useUnityContext } from "react-unity-webgl";
-import React, { Fragment } from "react";
+import React from "react";
 import "./TemplateData/style.css";
 
-export function Juego() {
+const CenteredContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; // This will make the container take up the full viewport height
+`;
 
-  const {unityProvider} = useUnityContext({
+export function Juego() {
+  const { unityProvider } = useUnityContext({
     loaderUrl: "Build/public.loader.js",
     dataUrl: "Build/public.data",
     frameworkUrl: "Build/public.framework.js",
     codeUrl: "Build/public.wasm",
   });
 
-  return (<Container>
-    <Fragment>
-      <Unity unityProvider={unityProvider} style={{ height: 560, width: 1000 }} />
-
-    </Fragment>
-  </Container>);
+  return (
+    <CenteredContainer>
+      <Unity unityProvider={unityProvider} style={{ height: 400, width: 920 }} />
+    </CenteredContainer>
+  );
 }
-const Container =styled.div`
-  height:100vh;
-`
