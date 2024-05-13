@@ -2,5 +2,5 @@
     "compilerOptions": {
         "baseUrl": "src"
     },
-    "include": ["src", "src/scenes/Unity/Build"]
+    "include": ["src", "src/scenes/adivina quien/Build"]
 }

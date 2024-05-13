@@ -17,6 +17,7 @@ import Groups from "scenes/groups";
 import StudentPage from "scenes/student-page";
 import GroupPage from "scenes/group-page";
 import { AuthProvider } from "react-auth-kit";
+import Adivinaquien from "scenes/adivinaquien";
 
 function App() {
 
@@ -45,6 +46,7 @@ function App() {
               <Route path="/home/games/cronologia" element={<Cronologia/>}/>
               <Route path="/home/games/preguntas" element={<Preguntas/>}/>
               <Route path="/home/games/cronologia" element={<Cronologia/>}/>
+              <Route path="/home/games/adivinaquien" element={<Adivinaquien/>}/>
               
             </Route>
             </Routes>
