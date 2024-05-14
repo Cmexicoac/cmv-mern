@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const alumnoSchema = new mongoose.Schema({
-  _id: {  // Usar la matricula como el identificador
+  matricula: {  // Usar la matricula como el identificador
     type: String,
     required: true
   },

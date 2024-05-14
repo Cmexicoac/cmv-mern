@@ -66,15 +66,7 @@ const navItems = [
       },
     ],
   },
-];
-
-const studentIds = [
-  "A00123412",
-  "A00123413",
-  "A00123414",
-  "A00123415",
-  "A00123416",
-];
+];  
 
 const Sidebar = ({
   drawerWidth,
@@ -92,6 +84,7 @@ const Sidebar = ({
 
   const [groups, setGroups] = useState([]);
   const [groupIds, setGroupIds] = useState([]);
+  const [studentIds, setStudentIds] = useState([]);
   const userId = Cookies.get('id');
 
   useEffect(() => {
@@ -108,6 +101,22 @@ const Sidebar = ({
   
     fetchGroups();
   }, []);
+
+
+  useEffect(() => {
+    const fetchAlumnos = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3001/api/getAlumnosByTeacherId/660ce067d2c487d6cf74aded`);
+        const matriculas = response.data.map(alumno => alumno.matricula);
+        setStudentIds(matriculas);
+      } catch (error) {
+        console.error('Error fetching alumnos:', error);
+      }
+    };
+
+    fetchAlumnos();
+  }, []);
+
 
   useEffect(() => {
     setActive(pathname.substring(1));
