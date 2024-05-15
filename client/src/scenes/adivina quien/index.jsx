@@ -11,10 +11,10 @@ const CenteredContainer = styled.div`
 
 export function Juego() {
   const { unityProvider } = useUnityContext({
-    loaderUrl: "/juegos/Build/Unity.loader.js",
-    dataUrl: "/juegos/Build/Unity.data",
-    frameworkUrl: "/juegos/Build/Unity.framework.js",
-    codeUrl: "/juegos/Build/Unity.wasm",
+    loaderUrl: "/juegos/Build/juegos.loader.js",
+    dataUrl: "/juegos/Build/juegos.data",
+    frameworkUrl: "/juegos/Build/juegos.framework.js",
+    codeUrl: "/juegos/Build/juegos.wasm",
   });
 
   return (
@@ -22,4 +22,4 @@ export function Juego() {
       <Unity unityProvider={unityProvider} style={{ height: 400, width: 920 }} />
     </CenteredContainer>
   );
-}
+} 
