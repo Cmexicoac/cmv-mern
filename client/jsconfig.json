@@ -2,5 +2,5 @@
     "compilerOptions": {
         "baseUrl": "src"
     },
-    "include": ["src", "public/juegos/Build"]
+    "include": ["src", "public/juegos/AQ/Build"]
 }
