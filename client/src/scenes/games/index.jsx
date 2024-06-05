@@ -28,35 +28,35 @@ const Games = () => {
 
   return (
     <Container maxWidth='sm'>
-      <Box sx={{ position: 'absolute', left: 300, top: 100, width: (windowSize.innerWidth - 360)}}>
+      <Box sx={{ position: 'absolute', left: 300, top: 100, width: (windowSize.innerWidth - 360) }}>
         <Grid container spacing={4}>
-        {/* Add Grid item for each game. Change info, image and route */}
+          {/* Add Grid item for each game. Change info, image and route */}
           <Grid item xs={4}>
-              <Card sx={{ 
-                maxWidth: 800 
-                }}>
-                <CardActionArea onClick={() => navigate('/home/games/colon')}>   {/* Game path */}
-                  <CardMedia
-                    component="img"
-                    height="250"
-                    image={require('assets/images/juegos/colon.png')}
-                    alt="Colón"
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h3" component="div">
-                      En búsqueda del Nuevo Mundo
-                    </Typography>
-                    <Typography variant="body1" color="text.secondary">
-                      Sé parte de la tripulación de Cristobal Colón y explora el mundo acompañándolo en sus diferentes viajes.
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
+            <Card sx={{
+              maxWidth: 800
+            }}>
+              <CardActionArea onClick={() => navigate('/home/games/colon')}>   {/* Game path */}
+                <CardMedia
+                  component="img"
+                  height="250"
+                  image={require('assets/images/juegos/colon.png')}
+                  alt="Colón"
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h3" component="div">
+                    En búsqueda del Nuevo Mundo
+                  </Typography>
+                  <Typography variant="body1" color="text.secondary">
+                    Sé parte de la tripulación de Cristobal Colón y explora el mundo acompañándolo en sus diferentes viajes.
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
           </Grid>
           <Grid item xs={4}>
-            <Card sx={{ 
-              maxWidth: 800 
-              }}>
+            <Card sx={{
+              maxWidth: 800
+            }}>
               <CardActionArea onClick={() => navigate('/home/games/conquista')}>
                 <CardMedia
                   component="img"
@@ -76,9 +76,9 @@ const Games = () => {
             </Card>
           </Grid>
           <Grid item xs={4}>
-            <Card sx={{ 
-              maxWidth: 800 
-              }}>
+            <Card sx={{
+              maxWidth: 800
+            }}>
               <CardActionArea onClick={() => navigate('/home/games/cronologia')}>
                 <CardMedia
                   component="img"
@@ -98,9 +98,9 @@ const Games = () => {
             </Card>
           </Grid>
           <Grid item xs={4}>
-            <Card sx={{ 
-              maxWidth: 800 
-              }}>
+            <Card sx={{
+              maxWidth: 800
+            }}>
               <CardActionArea onClick={() => navigate('/home/games/preguntas')}>
                 <CardMedia
                   component="img"
@@ -119,6 +119,48 @@ const Games = () => {
               </CardActionArea>
             </Card>
           </Grid>
+          <Grid item xs={4}>
+            <Card sx={{
+              maxWidth: 800
+            }}>
+              <CardActionArea onClick={() => navigate('/home/games/recoleccion')}>   {"/home/games/recoleccion"}
+                <CardMedia
+                  component="img"
+                  height="250"
+                  image={require('assets/images/juegos/recoleccion.png')} // Asegúrate de tener la imagen correcta aquí
+                  alt="Recolección"
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h3" component="div">
+                    Recoleccion
+                  </Typography>
+                  <Typography variant="body1" color="text.secondary">
+                    Sé parte de la tripulación de Cristobal Colón y explora el mundo acompañándolo en sus diferentes viajes.  // Cambia esto a la descripción de tu juego
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </Grid>
+          <Grid item xs={4}>
+            <Card sx={{ maxWidth: 800 }}>
+              <CardActionArea onClick={() => navigate('/home/games/adivinaquien')}>   {"/home/games/adivinaquien"}
+                <CardMedia
+                  component="img"
+                  height="250"
+                  image={require('assets/images/juegos/adivinaquien.png')} // Asegúrate de tener la imagen correcta aquí
+                  alt="Adivina Quien"
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h3" component="div">
+                    Adivina Quien  // Cambia esto al título de tu juego
+                  </Typography>
+                  <Typography variant="body1" color="text.secondary">
+                    Descripción del Juego  // Cambia esto a la descripción de tu juego
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </Grid>
         </Grid>
       </Box>
     </Container>
@@ -127,8 +169,8 @@ const Games = () => {
 
 
 function getWindowSize() {
-  const {innerWidth, innerHeight} = window;
-  return {innerWidth, innerHeight};
+  const { innerWidth, innerHeight } = window;
+  return { innerWidth, innerHeight };
 }
 
 export default Games;

@@ -17,10 +17,10 @@ const FullScreenButton = styled.button`
 
 export function Juego() {
   const { unityProvider } = useUnityContext({
-    loaderUrl: "/juegos/Build/juegos.loader.js",
-    dataUrl: "/juegos/Build/juegos.data",
-    frameworkUrl: "/juegos/Build/juegos.framework.js",
-    codeUrl: "/juegos/Build/juegos.wasm",
+    loaderUrl: "/juegos/AQ/Build/juegos.loader.js",
+    dataUrl: "/juegos/AQ/Build/juegos.data",
+    frameworkUrl: "/juegos/AQ/Build/juegos.framework.js",
+    codeUrl: "/juegos/AQ/Build/juegos.wasm",
   });
 
   const unityRef = useRef(null);

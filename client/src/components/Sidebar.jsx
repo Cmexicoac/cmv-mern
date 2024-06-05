@@ -59,11 +59,6 @@ const navItems = [
         icon: <SportsEsportsOutlined />,
         path: "home/games",
       },
-      {
-        text: "Adivina Quien",
-        icon: <SportsEsportsOutlined />,
-        path: "home/dashboard/adivinaquien",
-      },
     ],
   },
 ];  
