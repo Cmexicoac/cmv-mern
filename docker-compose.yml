@@ -1,4 +1,3 @@
-version: '3'
 services:
   client:
     build: ./client
@@ -6,30 +5,35 @@ services:
       - "3000:3000"
     volumes:
       - ./client:/usr/src/app
-    command: npm start
+      - /usr/src/app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+    depends_on:
+      - server
+
   server:
     build: ./server
     ports:
-      - "5000:5000"
+      - "6001:6001"
     volumes:
       - ./server:/usr/src/app
-    command: node index.js
+      - /usr/src/app/node_modules
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - mongo_db
+
   mongo_db:
     container_name: mongo_container
-    image: mongo
+    image: mongo:7
     volumes:
-      - ./data/mongo:/data/db
+      - mongo_data:/data/db
     ports:
       - "27017:27017"
     restart: always
-  postgres_db:
-    container_name: postgres_container
-    image: postgres
-    restart: always
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_PASSWORD: your_password
-      POSTGRES_DB: your_database
-    volumes:
-      - ./data/postgres:/var/lib/postgresql/data
+
+volumes:
+  mongo_data:

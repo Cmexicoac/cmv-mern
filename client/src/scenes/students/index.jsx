@@ -1,86 +1,47 @@
-import React, { useEffect } from 'react';
-import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress, Box, Avatar } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import Chart from 'chart.js/auto';
-import { Line } from 'react-chartjs-2';
-const students = [
-  { id: 1, name: 'John Doe', grade: 'A', status: 'Activo', gameScore: 85, timePlayed: 25, activeInGame: true },
-  { id: 2, name: 'Jane Smith', grade: 'B', status: 'Inactivo', gameScore: 70, timePlayed: 15, activeInGame: false },
-  { id: 3, name: 'Bob Johnson', grade: 'C', status: 'Activo', gameScore: 60, timePlayed: 30, activeInGame: true },
-  { id: 4, name: 'Alice Williams', grade: 'A', status: 'Inactivo', gameScore: 90, timePlayed: 40, activeInGame: false },
-];
-
-// Generate random game score data for each student over time
-const generateRandomGameData = (student, numDataPoints) => {
-  const data = [];
-  let score = student.gameScore;
-  for (let i = 0; i < numDataPoints; i++) {
-    // Simulate incremental changes in the game score
-    const scoreChange = Math.floor(Math.random() * 20) - 10; // Random value between -10 and 10
-    score += scoreChange;
-    data.push(score);
-  }
-  return data;
-};
-
-const createPieChart = (canvas, student, theme) => {
-  // Check if the chart already exists, and destroy it if it does.
-  const existingChart = Chart.getChart(canvas);
-  if (existingChart) {
-    existingChart.destroy();
-  }
-
-  const chartData = {
-    labels: ['Puntuación', 'Tiempo jugado', 'Activo en el juego'],
-    datasets: [{
-      data: [student.gameScore, student.timePlayed, student.activeInGame ? 1 : 0],
-      backgroundColor: [
-        theme.palette.primary.main,
-        theme.palette.secondary.main,
-        theme.palette.error.main,
-      ],
-    }],
-  };
-
-  new Chart(canvas, {
-    type: 'pie',
-    data: chartData,
-  });
-};
-
-const lineChartData = {
-  labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'],
-  datasets: students.map((student) => ({
-    label: student.name,
-    fill: false,
-    lineTension: 0.1,
-    borderColor: `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 1)`, // Random color
-    borderWidth: 2,
-    pointRadius: 0, // No data points
-    data: generateRandomGameData(student, 6), // 6 data points for each student
-  })),
-};
-
-
-const lineChartOptions = {
-  scales: {
-    y: {
-      beginAtZero: false,
-    },
-  },
-};
+import axios from 'axios';
 
 const Students = () => {
   const theme = useTheme();
+  const [students, setStudents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    students.forEach((student) => {
-      const canvas = document.getElementById(`pieChart-${student.id}`);
-      if (canvas) {
-        createPieChart(canvas, student, theme);
+    const fetchStudents = async () => {
+      try {
+        const response = await axios.get('http://localhost:6001/api/getUser');
+        // Filter only students (rol: "alumno")
+        const studentUsers = response.data.filter(user => user.rol === 'alumno');
+        setStudents(studentUsers);
+        setLoading(false);
+      } catch (err) {
+        setError('Error al cargar los estudiantes');
+        setLoading(false);
+        console.error('Error fetching students:', err);
       }
-    });
-  }, [theme]);
+    };
+
+    fetchStudents();
+  }, []);
+
+  if (loading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Typography color="error" variant="h6">
+        {error}
+      </Typography>
+    );
+  }
 
   return (
     <>
@@ -93,37 +54,40 @@ const Students = () => {
         <Table>
           <TableHead>
             <TableRow>
+              <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}>Foto</TableCell>
               <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}>Nombre</TableCell>
-              <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}>Calificación</TableCell>
-              <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}>Estatus</TableCell>
+              <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}>Email</TableCell>
+              <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}>Matrícula</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {students.map((student) => (
-              <TableRow key={student.id} style={{ backgroundColor: theme.palette.background.default }}>
-                <TableCell>{student.name}</TableCell>
-                <TableCell>{student.grade}</TableCell>
-                <TableCell>{student.status}</TableCell>
+              <TableRow key={student._id} style={{ backgroundColor: theme.palette.background.default }}>
+                <TableCell>
+                  <Avatar 
+                    src={student.foto} 
+                    alt={student.nombre}
+                    sx={{ width: 40, height: 40 }}
+                  >
+                    {student.nombre ? student.nombre.charAt(0).toUpperCase() : 'A'}
+                  </Avatar>
+                </TableCell>
+                <TableCell>{student.nombre || 'Sin nombre'}</TableCell>
+                <TableCell>{student.email}</TableCell>
+                <TableCell>{student.matricula}</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
 
-      {/* Display pie charts separately */}
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        {students.map((student) => (
-          <div key={student.id}>
-            <canvas id={`pieChart-${student.id}`} width="100" height="100"></canvas>
-            <Typography variant="body2" align="center">{student.name}</Typography>
-          </div>
-        ))}
-      </div>
-
-      {/* Display Line chart for students' game points */}
-      <div style={{ marginTop: '20px' }}>
-        <Line data={lineChartData} options={lineChartOptions} />
-      </div>
+      {students.length === 0 && (
+        <Box display="flex" justifyContent="center" mt={4}>
+          <Typography variant="body1" color="textSecondary">
+            No hay estudiantes registrados
+          </Typography>
+        </Box>
+      )}
     </>
   );
 };
