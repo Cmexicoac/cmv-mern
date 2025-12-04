@@ -15,6 +15,13 @@ export const useGameTracking = (gameName) => {
   const [score, setScore] = useState(0);
   const startTimeRef = useRef(null);
   const timerRef = useRef(null);
+  const gameNameRef = useRef(gameName);
+  const autoStartRef = useRef(false);
+
+  // Update game name ref when it changes
+  useEffect(() => {
+    gameNameRef.current = gameName;
+  }, [gameName]);
 
   // Initialize socket connection
   useEffect(() => {
@@ -23,25 +30,37 @@ export const useGameTracking = (gameName) => {
 
     // Only track for students
     if (userRole !== 'alumno' || !studentId) {
+      console.log('Game tracking: Not a student, skipping tracking');
       return;
     }
 
+    console.log('Game tracking: Initializing socket connection...');
+    
     socketRef.current = io(SOCKET_URL, {
       transports: ['websocket', 'polling'],
     });
 
     socketRef.current.on('connect', () => {
-      console.log('Connected to game tracking server');
+      console.log('Game tracking: Connected to server');
       setIsConnected(true);
+      
+      // Auto-start game session when connected
+      if (autoStartRef.current && socketRef.current) {
+        console.log('Game tracking: Auto-starting game session...');
+        socketRef.current.emit('startGame', {
+          studentId: Cookies.get('id'),
+          gameName: gameNameRef.current,
+        });
+      }
     });
 
     socketRef.current.on('disconnect', () => {
-      console.log('Disconnected from game tracking server');
+      console.log('Game tracking: Disconnected from server');
       setIsConnected(false);
     });
 
     socketRef.current.on('gameStarted', (data) => {
-      console.log('Game session started:', data.sessionId);
+      console.log('Game tracking: Session started:', data.sessionId);
       sessionIdRef.current = data.sessionId;
       setSessionStarted(true);
       startTimeRef.current = Date.now();
@@ -64,7 +83,7 @@ export const useGameTracking = (gameName) => {
     });
 
     socketRef.current.on('gameEnded', (data) => {
-      console.log('Game session ended:', data);
+      console.log('Game tracking: Session ended:', data);
       setSessionStarted(false);
     });
 
@@ -73,6 +92,7 @@ export const useGameTracking = (gameName) => {
     });
 
     return () => {
+      console.log('Game tracking: Cleaning up...');
       if (heartbeatRef.current) {
         clearInterval(heartbeatRef.current);
       }
@@ -80,6 +100,13 @@ export const useGameTracking = (gameName) => {
         clearInterval(timerRef.current);
       }
       if (socketRef.current) {
+        // End game session before disconnecting
+        if (sessionIdRef.current) {
+          socketRef.current.emit('endGame', {
+            sessionId: sessionIdRef.current,
+            score: score,
+          });
+        }
         socketRef.current.disconnect();
       }
     };
@@ -91,20 +118,28 @@ export const useGameTracking = (gameName) => {
     const userRole = Cookies.get('rol');
 
     if (userRole !== 'alumno' || !studentId) {
-      console.log('Game tracking only available for students');
+      console.log('Game tracking: Only available for students');
       return;
     }
 
+    autoStartRef.current = true;
+
     if (socketRef.current && isConnected) {
+      console.log('Game tracking: Starting game session for', gameName);
       socketRef.current.emit('startGame', {
         studentId,
         gameName,
       });
+    } else {
+      console.log('Game tracking: Socket not connected yet, will auto-start when connected');
     }
   }, [gameName, isConnected]);
 
   // End game session
   const endGame = useCallback((finalScore = null) => {
+    console.log('Game tracking: Ending game session...');
+    autoStartRef.current = false;
+    
     if (heartbeatRef.current) {
       clearInterval(heartbeatRef.current);
     }
