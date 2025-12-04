@@ -30,6 +30,7 @@
     "react-scripts": "5.0.1",
     "react-unity-webgl": "^10.1.5",
     "shebang-regex": "^4.0.0",
+    "socket.io-client": "^4.7.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

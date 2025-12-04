@@ -31,7 +31,7 @@ function LoginPage() {
     event.preventDefault();
   
     try {
-      const response = await axios.post('http://localhost:3001/api/login', {
+      const response = await axios.post('http://localhost:6001/api/login', {
         email: email,
         password: password
       });
@@ -49,7 +49,12 @@ function LoginPage() {
         Cookies.set('rol', user.rol);
         Cookies.set('id', user.id);
 
-        navigate('/home');
+        // Redirect based on user role
+        if (user.rol === 'alumno') {
+          navigate('/student-home');
+        } else {
+          navigate('/home');
+        }
       } else {
         setErrorMessage(response.data.message);
       }

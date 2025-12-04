@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
-import { Card, CardContent, Typography, Container, Box, alpha } from '@mui/material';
+import { Card, CardContent, Typography, Container, Box, alpha, Chip } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import useGameTracking from '../../hooks/useGameTracking';
 
 
 const Preguntas = () => {
   const [windowSize, setWindowSize] = useState(getWindowSize());
+  const { 
+    sessionStarted, 
+    formattedTime, 
+    startGame, 
+    endGame 
+  } = useGameTracking('preguntas');
 
   // Retrieve the user's name and role from the cookies
   const nombre = Cookies.get('nombre');
-  const role = Cookies.get('role');
+  const role = Cookies.get('rol');
 
   useEffect(() => {
     function handleWindowResize() {
@@ -23,11 +31,34 @@ const Preguntas = () => {
     };
   }, []);
 
+  // Start tracking when component mounts
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      startGame();
+    }, 1000);
+
+    return () => {
+      clearTimeout(timer);
+      endGame();
+    };
+  }, []);
+
   return (
     <Container sx={{position: 'absolute', left: 275, top: 80}}>
-      <Typography gutterBottom variant="h2" component="div">
-        Preguntas y Respuestas
-      </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+        <Typography gutterBottom variant="h2" component="div">
+          Preguntas y Respuestas
+        </Typography>
+        {sessionStarted && role === 'alumno' && (
+          <Chip 
+            icon={<AccessTimeIcon />} 
+            label={`Tiempo: ${formattedTime}`} 
+            color="primary" 
+            variant="outlined"
+            sx={{ fontSize: '1.2rem', padding: '20px 10px' }}
+          />
+        )}
+      </Box>
       <Grid container spacing={4}>
         <Grid item xs={12}>
           <Box sx={{ width: (windowSize.innerWidth - 360), height: 750, bgcolor: alpha('#6C6C6C', 0.5) }}/>
@@ -41,7 +72,7 @@ const Preguntas = () => {
               <Typography variant="h3" color="text.secondary">
                 Mouse: Seleccionar opciones
               </Typography>
-              <Typography variant="h3" color="text.secondary">  {/* Nuevo Typography para cada párrafo */}
+              <Typography variant="h3" color="text.secondary">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
                 Curabitur pretium lectus in lacus interdum, a tempus sem ornare.
               </Typography>

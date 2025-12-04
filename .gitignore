@@ -1,0 +1,64 @@
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env/*
+
+# Dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Build outputs
+client/build/
+dist/
+build/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Testing
+coverage/
+.nyc_output/
+
+# IDE / Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Unity WebGL build artifacts (keep committed builds, ignore local dev files)
+client/src/scenes/Unity/Build/*.wasm
+client/src/scenes/Unity/Build/*.data
+client/src/scenes/Unity/Build/*.unityweb
+
+# Docker
+*.log
+docker-compose.override.yml
+
+# MongoDB data (if local)
+data/*
+mongo-data/
+
+# Misc
+.cache/
+*.bak
+*.tmp
