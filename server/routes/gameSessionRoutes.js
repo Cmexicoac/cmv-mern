@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 const GameSession = require('../models/GameSession');
 
 // Get all game sessions for a student
@@ -21,7 +22,7 @@ router.get('/api/game-stats/:studentId', async (req, res) => {
         const { studentId } = req.params;
         
         const stats = await GameSession.aggregate([
-            { $match: { studentId: require('mongoose').Types.ObjectId(studentId) } },
+            { $match: { studentId: new mongoose.Types.ObjectId(studentId) } },
             {
                 $group: {
                     _id: '$gameName',
@@ -36,7 +37,7 @@ router.get('/api/game-stats/:studentId', async (req, res) => {
         
         // Calculate total time across all games
         const totalStats = await GameSession.aggregate([
-            { $match: { studentId: require('mongoose').Types.ObjectId(studentId) } },
+            { $match: { studentId: new mongoose.Types.ObjectId(studentId) } },
             {
                 $group: {
                     _id: null,
