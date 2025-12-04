@@ -10,3 +10,179 @@ body,
   width: 100%;
   font-family: "Inter", "sans-serif";
 }
+
+/* Global typography */
+html, body, #root {
+  height: 100%;
+  font-family: 'Inter', 'Roboto', 'Open Sans', Arial, sans-serif;
+  color: #222; /* gris oscuro por defecto */
+  background-color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Card / container styles */
+.app-card,
+.MuiPaper-root.app-card,
+.MuiCard-root,
+.MuiPaper-root {
+  border-radius: 12px;
+  /* Sombra suave para sensación de profundidad */
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+  background: #fff;
+  padding: 16px;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+/* Efecto sutil al pasar el ratón */
+.app-card:hover,
+.MuiCard-root:hover,
+.MuiPaper-root:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.10);
+}
+
+/* Table header consistent look */
+.table-header-cell {
+  background-color: #f0f4f8 !important; /* gris muy claro */
+  color: #1f4b8a !important; /* azul suave para destacar */
+  font-weight: 700;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+/* Table body rows spacing & thin separators */
+.MuiTableCell-root {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+.MuiTableRow-root:not(:last-child) {
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+/* Badges */
+.badge-activo {
+  background-color: #dff6e9;
+  color: #1b5e20;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 999px;
+  display: inline-block;
+}
+.badge-inactivo {
+  background-color: #fdecea;
+  color: #b71c1c;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+/* Pie chart card layout */
+.pie-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+  border-radius: 12px;
+  min-height: 220px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
+  background: #fff;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.pie-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+}
+
+/* Canvas sizing and centered % text */
+.pie-canvas {
+  width: 100px !important;
+  height: 100px !important;
+  display: block;
+}
+
+.pie-center-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+  color: #000; /* porcentaje en negro */
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+/* Titles */
+.section-title {
+  font-weight: 700;
+  text-align: left;
+  margin-bottom: 12px;
+  color: #111;
+}
+
+/* Layout spacing between table card and charts card */
+.section-gap {
+  margin-top: 24px;
+}
+
+/* Make charts row wrap nicely on small screens */
+.pie-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+/* Responsive tweaks */
+@media (max-width: 900px) {
+  .pie-canvas {
+    width: 120px !important;
+    height: 120px !important;
+  }
+  .pie-card { min-height: 200px; padding: 12px; }
+}
+
+/* filtro arriba de la tabla */
+.filter-control {
+  max-width: 360px;
+}
+
+/* fondo sutil para diferenciar bloques (opcional, aplicado a .app-card si quieres) */
+.section-bg {
+  background-color: #fbfdff;
+}
+
+/* Divider spacing ya incluido por MUI, aquí sólo fine-tune si hace falta */
+.section-divider {
+  margin: 12px 0;
+}
+
+/* Sidebar: resaltar elemento seleccionado (tema oscuro) */
+.MuiListItemButton-root.Mui-selected {
+  background-color: #1F1F1F !important;   /* fondo sutil oscuro */
+  color: #fff !important;
+  position: relative;
+  overflow: visible;
+}
+
+/* barra vertical sólida a la izquierda del elemento seleccionado */
+.MuiListItemButton-root.Mui-selected::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 4px;
+  background: #673AB7; /* morado solicitado */
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  box-shadow: 0 2px 6px rgba(103,58,183,0.12);
+}
+
+/* Ajuste de padding para que el contenido no se quede pegado a la barra */
+.MuiListItemButton-root.Mui-selected .MuiListItemText-root,
+.MuiListItemButton-root.Mui-selected .MuiListItemIcon-root {
+  margin-left: 12px;
+}

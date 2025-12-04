@@ -2,17 +2,14 @@ const Alumno = require('../models/Alumno');
 const User = require('../models/User.js');
 
 const registerAlumno = async (req, res) => {
-    try{
+    try {
         console.log("Intentando registrar un Alumno");
         const alumno = new Alumno(req.body);
         await alumno.save();
-        res.status(201).send({alumno});
-
-    }
-    catch (error){
+        res.status(201).send({ alumno });
+    } catch (error) {
         res.status(400).send(error);
     }
-
 };
 
 const getAlumnos = async (req, res) => {
@@ -27,7 +24,6 @@ const getAlumnos = async (req, res) => {
 const deleteAllData = async (res) => {
     try {
         await Alumno.deleteMany({});
-        
         res.status(200).json({ message: "Todos los datos han sido borrados." });
     } catch (error) {
         res.status(500).json({ message: "Error during data deletion", error: error.message });

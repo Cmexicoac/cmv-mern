@@ -1,134 +1,68 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '@mui/material/styles';
-import { Card, CardContent, CardMedia, CardActionArea, Typography, Container, Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  CardActionArea,
+  Typography,
+  Container,
+  Box,
+  Grid,
+} from '@mui/material';
 import Cookies from 'js-cookie';
-import Grid from '@mui/material/Unstable_Grid2';
 import { useNavigate } from "react-router-dom";
 
+const gamesList = [
+  { id: 'colon', title: 'En búsqueda del Nuevo Mundo', desc: 'Sé parte de la tripulación de Cristobal Colón y explora el mundo acompañándolo en sus diferentes viajes.', img: require('assets/images/juegos/colon.png'), path: '/home/games/colon' },
+  { id: 'conquista', title: 'La Conquista', desc: 'Revive algunos de los eventos más importantes de la conquista de México junto a Hernan Cortéz.', img: require('assets/images/juegos/conquista.png'), path: '/home/games/conquista' },
+  { id: 'cronologia', title: 'Cronología Prehispánica', desc: 'Aprende sobre las civilizaciones prehispánicas mexicanas y algunos otros eventos importantes en la historia de México.', img: require('assets/images/juegos/cronologia.png'), path: '/home/games/cronologia' },
+  { id: 'preguntas', title: 'Preguntas y Respuestas', desc: 'Descubre qué tanto sabes sobre México en este quiz lleno de preguntas de todo tipo.', img: require('assets/images/juegos/preguntas.png'), path: '/home/games/preguntas' },
+];
+
 const Games = () => {
-  const [windowSize, setWindowSize] = useState(getWindowSize());
   const theme = useTheme();
   const navigate = useNavigate();
 
-  // Retrieve the user's name and role from the cookies
-  const nombre = Cookies.get('nombre');
-  const role = Cookies.get('role');
-
   useEffect(() => {
-    function handleWindowResize() {
-      setWindowSize(getWindowSize());
-    }
-
-    window.addEventListener('resize', handleWindowResize);
-
-    return () => {
-      window.removeEventListener('resize', handleWindowResize);
-    };
+    // opcional: cualquier setup
   }, []);
 
   return (
-    <Container maxWidth='sm'>
-      <Box sx={{ position: 'absolute', left: 300, top: 100, width: (windowSize.innerWidth - 360)}}>
-        <Grid container spacing={4}>
-        {/* Add Grid item for each game. Change info, image and route */}
-          <Grid item xs={4}>
-              <Card sx={{ 
-                maxWidth: 800 
-                }}>
-                <CardActionArea onClick={() => navigate('/home/games/colon')}>   {/* Game path */}
-                  <CardMedia
-                    component="img"
-                    height="250"
-                    image={require('assets/images/juegos/colon.png')}
-                    alt="Colón"
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h3" component="div">
-                      En búsqueda del Nuevo Mundo
-                    </Typography>
-                    <Typography variant="body1" color="text.secondary">
-                      Sé parte de la tripulación de Cristobal Colón y explora el mundo acompañándolo en sus diferentes viajes.
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-          </Grid>
-          <Grid item xs={4}>
-            <Card sx={{ 
-              maxWidth: 800 
-              }}>
-              <CardActionArea onClick={() => navigate('/home/games/conquista')}>
+    <Container maxWidth="xl" sx={{ py: 4 }}>
+      <Typography variant="h4" sx={{ fontWeight: 700, mb: 3 }}>Juegos</Typography>
+
+      <Grid container spacing={3}>
+        {gamesList.map((game) => (
+          <Grid item key={game.id} xs={12} sm={6} md={4} lg={3}>
+            <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+              <CardActionArea onClick={() => navigate(game.path)} sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
                 <CardMedia
                   component="img"
-                  height="250"
-                  image={require('assets/images/juegos/conquista.png')}
-                  alt="Conquista"
+                  image={game.img}
+                  alt={game.title}
+                  sx={{
+                    width: '100%',
+                    height: { xs: 160, sm: 190, md: 220 },
+                    objectFit: 'cover',
+                    flexShrink: 0
+                  }}
                 />
-                <CardContent>
-                  <Typography gutterBottom variant="h3" component="div">
-                    La Conquista
+                <CardContent sx={{ flexGrow: 1 }}>
+                  <Typography variant="h6" component="h3" sx={{ fontWeight: 700, mb: 1 }}>
+                    {game.title}
                   </Typography>
-                  <Typography variant="body1" color="text.secondary">
-                    Revive algunos de los eventos más importantes de la conquista de México junto a Hernan Cortéz.
+                  <Typography variant="body2" color="text.secondary">
+                    {game.desc}
                   </Typography>
                 </CardContent>
               </CardActionArea>
             </Card>
           </Grid>
-          <Grid item xs={4}>
-            <Card sx={{ 
-              maxWidth: 800 
-              }}>
-              <CardActionArea onClick={() => navigate('/home/games/cronologia')}>
-                <CardMedia
-                  component="img"
-                  height="250"
-                  image={require('assets/images/juegos/cronologia.png')}
-                  alt="Cronos"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h3" component="div">
-                    Cronología Prehispánica
-                  </Typography>
-                  <Typography variant="body1" color="text.secondary">
-                    Aprende sobre las civilizaciones prehispánicas mexicanas y algunos otros eventos importantes en la historia de México.
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </Grid>
-          <Grid item xs={4}>
-            <Card sx={{ 
-              maxWidth: 800 
-              }}>
-              <CardActionArea onClick={() => navigate('/home/games/preguntas')}>
-                <CardMedia
-                  component="img"
-                  height="250"
-                  image={require('assets/images/juegos/preguntas.png')}
-                  alt="Preguntas"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h3" component="div">
-                    Preguntas y Respuestas
-                  </Typography>
-                  <Typography variant="body1" color="text.secondary">
-                    Descubre qué tanto sabes sobre México en este quiz lleno de preguntas de todo tipo.
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </Grid>
-        </Grid>
-      </Box>
+        ))}
+      </Grid>
     </Container>
   );
 };
-
-
-function getWindowSize() {
-  const {innerWidth, innerHeight} = window;
-  return {innerWidth, innerHeight};
-}
 
 export default Games;

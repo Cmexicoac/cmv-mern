@@ -10,6 +10,8 @@ import {
   ListItemText,
   Typography,
   useTheme,
+  Chip,
+  Stack,
 } from "@mui/material";
 import {
   SettingsOutlined,
@@ -297,16 +299,43 @@ const Sidebar = ({
                     <ListItemIcon>
                       <ArrowBackOutlined />
                     </ListItemIcon>
-                    <ListItemText primary="Back" />
+                    <ListItemText primary="Back" primaryTypographyProps={{ fontWeight: 700 }} />
                   </ListItemButton>
                 </ListItem>
-                {groupIds.map((id) => (
-                  <ListItem key={id} disablePadding>
-                    <ListItemButton onClick={() => handleClick(id)}>
-                      <ListItemText primary={id} />
-                    </ListItemButton>
-                  </ListItem>
-                ))}
+
+                {/* Colores por grupo: 1A=verde, 1B=rojo, 2A=azul, 2B=rosa */}
+                {groupIds.map((id, idx) => {
+                  const COLORS = ["#4caf50", "#f44336", "#1976d2", "#e91e63"];
+                  const bgColor = COLORS[idx % COLORS.length];
+                  const isActive = active === id.toLowerCase();
+
+                  return (
+                    <ListItem key={id} disablePadding>
+                      <ListItemButton
+                        onClick={() => handleClick(id)}
+                        sx={{
+                          borderRadius: 1,
+                          mb: 1,
+                          // si está activo, aplicar fondo sólido y texto claro
+                          backgroundColor: isActive ? bgColor : "transparent",
+                          color: isActive ? "#fff" : "inherit",
+                          // hover ligero para items no activos
+                          "&:hover": {
+                            backgroundColor: isActive ? bgColor : `${bgColor}22`,
+                          },
+                        }}
+                      >
+                        <ListItemText
+                          primary={id}
+                          primaryTypographyProps={{
+                            fontWeight: 700, // subtítulos en negrita
+                            color: isActive ? "#fff" : "inherit",
+                          }}
+                        />
+                      </ListItemButton>
+                    </ListItem>
+                  );
+                })}
               </List>
             )}
           </Box>

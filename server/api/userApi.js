@@ -1,5 +1,6 @@
 const User = require('../models/User.js');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
 const registerUser = async (req, res) => {
     try{
@@ -27,30 +28,28 @@ const getUsers = async (req, res) => {
 const loginUser = async (req, res) => {
     try {
       const { email, password } = req.body;
-  
       const user = await User.findOne({ email });
-      console.log(user);
-  
+      console.log('login intento:', email, 'usuario encontrado:', !!user);
+
       if (!user) {
-        return res.status(404).json({ message: "User not found" });
-      }
-  
-      if (user.password !== password) {
-        return res.status(401).json({ message: "Incorrect password" });
+        return res.status(400).json({ message: "Usuario o contraseña incorrecto" });
       }
 
-      // User authenticated successfully, generate a JWT token
+      const match = await bcrypt.compare(password, user.password);
+      if (!match) {
+        return res.status(400).json({ message: "Usuario o contraseña incorrecto" });
+      }
+
       const token = jwt.sign(
         { id: user._id, email: user.email, rol: user.rol, nombre: user.nombre, matricula: user.matricula, foto: user.foto },
-        'CMVmern', // replace with env later... your secret key
-        { expiresIn: '1h' } // token expiration time
+        process.env.JWT_SECRET || 'CMVmern',
+        { expiresIn: '1h' }
       );
-  
-      res.status(200).json({ message: "Login successful", token: token  });
+
+      return res.status(200).json({ message: "Login successful", token });
     } catch (error) {
-      res
-        .status(500)
-        .json({ message: "Error during login", error: error.message });
+      console.error('login error:', error);
+      return res.status(500).json({ message: "Error durante el login", error: error.message });
     }
 };
 
