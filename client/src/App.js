@@ -16,6 +16,7 @@ import Login from "scenes/login";
 import Groups from "scenes/groups";
 import StudentPage from "scenes/student-page";
 import GroupPage from "scenes/group-page";
+import Settings from "scenes/settings";
 //import { AuthProvider } from "react-auth-kit";
 import Unity from "scenes/Unity";
 
@@ -47,6 +48,9 @@ function App() {
               <Route path="/home/games/preguntas" element={<Preguntas/>}/>
               <Route path="/home/games/cronologia" element={<Cronologia/>}/>
               <Route path="/home/dashboard/unity" element={<Unity/>}/>
+              <Route path="/home/settings" element={<Settings/>}/>
+              {/* Student Home Route */}
+              <Route path="/student-home" element={<StudentPage/>}/>
             </Route>
             </Routes>
         </ThemeProvider>

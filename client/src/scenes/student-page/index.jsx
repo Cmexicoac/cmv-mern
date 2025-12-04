@@ -1,68 +1,89 @@
-import React, { useState } from 'react';
-import { Card, CardContent, Grid, List, ListItem, ListItemAvatar, ListItemText, Typography, Button, TextField } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent, Grid, List, ListItem, ListItemAvatar, ListItemText, Typography, Button, TextField, Box, CircularProgress } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Avatar } from '@mui/material';
 import SchoolIcon from '@mui/icons-material/School';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import LockIcon from '@mui/icons-material/Lock';
-import SquareFootIcon from '@mui/icons-material/SquareFoot';
+import EmailIcon from '@mui/icons-material/Email';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import GamepadIcon from '@mui/icons-material/Gamepad';
 import StarIcon from '@mui/icons-material/Star';
+import Cookies from 'js-cookie';
+import axios from 'axios';
 
 const StudentPage = () => {
   const theme = useTheme();
+  const [student, setStudent] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Dummy student data
-  const [student, setStudent] = useState({
-    fullName: 'Juan Pérez',
-    classroom: 'Salón 1',
-    rollNumber: 'A0012332',
-    schoolGrade: 'Sexto Grado',
-    profileImage: 'https://picsum.photos/200',
-    username: 'juanperez',
-    password: '********',
-    status: 'Activo',
-    gamePlaying: 'Cristóbal Colón',
-    points: 100,
-  });
+  useEffect(() => {
+    const fetchStudentData = async () => {
+      try {
+        const userId = Cookies.get('id');
+        const response = await axios.get('http://localhost:6001/api/getUser');
+        const currentStudent = response.data.find(user => user._id === userId);
+        
+        if (currentStudent) {
+          setStudent({
+            fullName: currentStudent.nombre || 'Sin nombre',
+            email: currentStudent.email,
+            matricula: currentStudent.matricula,
+            profileImage: currentStudent.foto || 'https://picsum.photos/200',
+            status: 'Activo',
+            gamePlaying: 'Cristóbal Colón',
+            points: 0,
+          });
+        } else {
+          setError('Estudiante no encontrado');
+        }
+        setLoading(false);
+      } catch (err) {
+        setError('Error al cargar los datos del estudiante');
+        setLoading(false);
+        console.error('Error fetching student:', err);
+      }
+    };
 
-  const [username, setUsername] = useState(student.username);
-  const [password, setPassword] = useState(student.password);
+    fetchStudentData();
+  }, []);
 
-  const handleProfilePictureChange = () => {
-    // TODO: Implement profile picture change logic
-    console.log('Profile picture changed');
-  };
+  if (loading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
+        <CircularProgress />
+      </Box>
+    );
+  }
 
-  const handleUsernameChange = (event) => {
-    setUsername(event.target.value);
-  };
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-
-  const handleSaveChanges = () => {
-    setStudent({
-      ...student,
-      username,
-      password,
-    });
-  };
+  if (error) {
+    return (
+      <Typography color="error" variant="h6">
+        {error}
+      </Typography>
+    );
+  }
 
   return (
     <>
+      <Typography variant="h4" component="h1" gutterBottom>
+        Bienvenido, {student.fullName}
+      </Typography>
+
       <Card>
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={12} md={2}>
-              <img src={student.profileImage} alt="Perfil" style={{ maxWidth: '200px', borderRadius: '50%' }} />
-              <Button variant="contained" color="primary" onClick={handleProfilePictureChange} style={{ marginTop: '16px' }}>
-                Cambiar Foto de Perfil
-              </Button>
+              <Avatar
+                src={student.profileImage}
+                alt="Perfil"
+                sx={{ width: 150, height: 150 }}
+              >
+                {student.fullName.charAt(0).toUpperCase()}
+              </Avatar>
             </Grid>
-            <Grid item xs={12} md={8} container direction="column" justifyContent="center">
+            <Grid item xs={12} md={10} container direction="column" justifyContent="center">
               <Typography variant="h5" component="h2" gutterBottom>
                 {student.fullName}
               </Typography>
@@ -72,31 +93,19 @@ const StudentPage = () => {
                     <ListItem>
                       <ListItemAvatar>
                         <Avatar style={{ backgroundColor: theme.palette.primary.main }}>
+                          <EmailIcon />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText primary="Correo Electrónico" secondary={student.email} />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemAvatar>
+                        <Avatar style={{ backgroundColor: theme.palette.primary.main }}>
                           <SchoolIcon />
                         </Avatar>
                       </ListItemAvatar>
-                      <ListItemText primary="Salón" secondary={student.classroom} />
+                      <ListItemText primary="Matrícula" secondary={student.matricula} />
                     </ListItem>
-                    <ListItem>
-                      <ListItemAvatar>
-                        <Avatar style={{ backgroundColor: theme.palette.primary.main }}>
-                          <PermIdentityIcon />
-                        </Avatar>
-                      </ListItemAvatar>
-                      <ListItemText primary="Número de Registro" secondary={student.rollNumber} />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemAvatar>
-                        <Avatar style={{ backgroundColor: theme.palette.primary.main }}>
-                          <SquareFootIcon />
-                        </Avatar>
-                      </ListItemAvatar>
-                      <ListItemText primary="Grado Escolar" secondary={student.schoolGrade} />
-                    </ListItem>
-                  </List>
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <List>
                     <ListItem>
                       <ListItemAvatar>
                         <Avatar style={{ backgroundColor: theme.palette.primary.main }}>
@@ -105,13 +114,17 @@ const StudentPage = () => {
                       </ListItemAvatar>
                       <ListItemText primary="Estado" secondary={student.status} />
                     </ListItem>
+                  </List>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <List>
                     <ListItem>
                       <ListItemAvatar>
                         <Avatar style={{ backgroundColor: theme.palette.primary.main }}>
                           <GamepadIcon />
                         </Avatar>
                       </ListItemAvatar>
-                      <ListItemText primary="Juego Jugando" secondary={student.gamePlaying} />
+                      <ListItemText primary="Juego Actual" secondary={student.gamePlaying} />
                     </ListItem>
                     <ListItem>
                       <ListItemAvatar>
@@ -119,7 +132,7 @@ const StudentPage = () => {
                           <StarIcon />
                         </Avatar>
                       </ListItemAvatar>
-                      <ListItemText primary="Puntos en Juego" secondary={student.points} />
+                      <ListItemText primary="Puntos" secondary={student.points} />
                     </ListItem>
                   </List>
                 </Grid>
@@ -132,31 +145,49 @@ const StudentPage = () => {
       <Card style={{ marginTop: '16px' }}>
         <CardContent>
           <Typography variant="h5" component="h2" gutterBottom>
-            Información de Cuenta
+            Juegos Disponibles
           </Typography>
-          <List>
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar style={{ backgroundColor: theme.palette.primary.main }}>
-                  <PermIdentityIcon />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText primary="Nombre de Usuario" secondary={student.username} />
-            </ListItem>
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar style={{ backgroundColor: theme.palette.primary.main }}>
-                  <LockIcon />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText primary="Contraseña" secondary={student.password} />
-            </ListItem>
-          </List>
-          <TextField label="Nombre de Usuario" value={username} onChange={handleUsernameChange} fullWidth margin="normal" />
-          <TextField label="Contraseña" value={password} onChange={handlePasswordChange} fullWidth margin="normal" />
-          <Button variant="contained" color="primary" onClick={handleSaveChanges} style={{ marginTop: '16px' }}>
-            Guardar Cambios
-          </Button>
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={4}>
+              <Card variant="outlined">
+                <CardContent>
+                  <Typography variant="h6">Cristóbal Colón</Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    Aprende sobre el descubrimiento de América
+                  </Typography>
+                  <Button variant="contained" color="primary" sx={{ mt: 2 }} href="/home/games/colon">
+                    Jugar
+                  </Button>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Card variant="outlined">
+                <CardContent>
+                  <Typography variant="h6">La Conquista</Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    Explora la historia de la conquista
+                  </Typography>
+                  <Button variant="contained" color="primary" sx={{ mt: 2 }} href="/home/games/conquista">
+                    Jugar
+                  </Button>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Card variant="outlined">
+                <CardContent>
+                  <Typography variant="h6">Cronología</Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    Ordena los eventos históricos
+                  </Typography>
+                  <Button variant="contained" color="primary" sx={{ mt: 2 }} href="/home/games/cronologia">
+                    Jugar
+                  </Button>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
         </CardContent>
       </Card>
     </>
@@ -164,3 +195,4 @@ const StudentPage = () => {
 };
 
 export default StudentPage;
+

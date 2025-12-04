@@ -49,7 +49,12 @@ function LoginPage() {
         Cookies.set('rol', user.rol);
         Cookies.set('id', user.id);
 
-        navigate('/home');
+        // Redirect based on user role
+        if (user.rol === 'alumno') {
+          navigate('/student-home');
+        } else {
+          navigate('/home');
+        }
       } else {
         setErrorMessage(response.data.message);
       }

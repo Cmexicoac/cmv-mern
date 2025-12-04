@@ -36,8 +36,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "./FlexBetween";
 import profileImage from "assets/images/profile.jpeg";
 import logocmv from 'assets/images/logocmv.png'
+import Cookies from 'js-cookie';
 
-const navItems = [
+// Nav items for teachers (profesor)
+const teacherNavItems = [
   {
     text: "Dashboard",
     icon: <HomeOutlined />,
@@ -45,19 +47,43 @@ const navItems = [
       {
         text: "Alumnos",
         icon: <PersonOutlined />,
-        path: "home/students",
+        path: "/home/students",
       },
       {
         text: "Grupos",
         icon: <GroupOutlined />,
-        path: "home/groups",
+        path: "/home/groups",
       },
       {
         text: "Juegos",
         icon: <SportsEsportsOutlined />,
-        path: "home/games",
+        path: "/home/games",
       },
     ],
+  },
+  {
+    text: "Configuración",
+    icon: <SettingsOutlined />,
+    path: "/home/settings",
+  },
+];
+
+// Nav items for students (alumno)
+const studentNavItems = [
+  {
+    text: "Dashboard",
+    icon: <HomeOutlined />,
+    path: "/student-home",
+  },
+  {
+    text: "Juegos",
+    icon: <SportsEsportsOutlined />,
+    path: "/home/games",
+  },
+  {
+    text: "Configuración",
+    icon: <SettingsOutlined />,
+    path: "/home/settings",
   },
 ];
 
@@ -86,15 +112,22 @@ const Sidebar = ({
   const { pathname } = useLocation();
   const [active, setActive] = useState("");
   const [showStudents, setShowStudents] = useState(false);
-  const [showGroups, setShowGroups] = useState(false); // add showGroups state
-  const [navitemsActive, setNavitemsActive] = useState(false); // add navitemsActive state
+  const [showGroups, setShowGroups] = useState(false);
   const navigate = useNavigate();
   const theme = useTheme();
+  
+  // Get user role from cookies
+  const userRole = Cookies.get('rol');
+  
+  // Select nav items based on user role
+  const navItems = userRole === 'alumno' ? studentNavItems : teacherNavItems;
 
   useEffect(() => {
     setActive(pathname.substring(1));
-    setNavitemsActive(pathname === "/home/dashboard"); // set navitemsActive based on the current path
   }, [pathname]);
+
+  // Show nav items on all pages except login
+  const navitemsActive = pathname !== "/" && (pathname.startsWith("/home") || pathname.startsWith("/student-home"));
 
   const handleClick = (text, path) => {
     const lcText = text.toLowerCase();
@@ -137,11 +170,11 @@ const Sidebar = ({
 
   return (
     <Box component="nav">
-      {isSidebarOpen && (
+      {(isSidebarOpen || isNonMobile) && (
         <Drawer
           open={isSidebarOpen}
           onClose={() => setIsSidebarOpen(false)}
-          variant="persistent"
+          variant={isNonMobile ? "persistent" : "temporary"}
           sx={{
             width: drawerWidth,
             "& .MuiDrawer-paper": {
@@ -169,7 +202,7 @@ const Sidebar = ({
             </Box>
             {navitemsActive && ( // conditionally render navItems based on navitemsActive state
               <List>
-                {navItems.map(({ text, icon, children }) => {
+                {navItems.map(({ text, icon, children, path }) => {
                   if (!icon) {
                     return (
                       <Typography key={text} sx={{ m: "2.25rem 0 1rem 3rem" }}>
@@ -187,7 +220,7 @@ const Sidebar = ({
                             if (children) {
                               setActive(lcText);
                             } else {
-                              handleClick(text, null);
+                              handleClick(text, path);
                             }
                             if (lcText === "alumnos") {
                               setShowStudents(true);

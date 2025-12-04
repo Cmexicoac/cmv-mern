@@ -15,24 +15,25 @@ const Layout = () => {
 
   return (
     <Box display={isNonMobile ? "flex" : "block"} width="100%" height="100%">
-  {isSidebarVisible && ( 
-    <Sidebar
-      isNonMobile={isNonMobile}
-      drawerWidth="250px"
-      isSidebarOpen={true}
-    />
-  )}
+      {isSidebarVisible && ( 
+        <Sidebar
+          isNonMobile={isNonMobile}
+          drawerWidth="250px"
+          isSidebarOpen={isSidebarOpen}
+          setIsSidebarOpen={setIsSidebarOpen}
+        />
+      )}
 
-  <Box width="100%"> {/* Ensure the parent Box takes full width */}
-    {!isLoginPage && (
-      <Navbar
-        isSidebarOpen={isSidebarOpen}
-        setIsSidebarOpen={setIsSidebarOpen}
-      />
-    )}
-    <Outlet />
-  </Box>
-</Box>
+      <Box flexGrow={1}>
+        {!isLoginPage && (
+          <Navbar
+            isSidebarOpen={isSidebarOpen}
+            setIsSidebarOpen={setIsSidebarOpen}
+          />
+        )}
+        <Outlet />
+      </Box>
+    </Box>
   );
 };
 export default Layout;
