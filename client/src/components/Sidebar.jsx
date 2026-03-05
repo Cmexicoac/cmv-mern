@@ -37,6 +37,7 @@ import FlexBetween from "./FlexBetween";
 import profileImage from "assets/images/profile.jpeg";
 import logocmv from 'assets/images/logocmv.png'
 import Cookies from 'js-cookie';
+import axios from 'axios';
 
 // Nav items for teachers (profesor)
 const teacherNavItems = [
@@ -87,14 +88,7 @@ const studentNavItems = [
   },
 ];
 
-const studentIds = [
-  "A00123412",
-  "A00123413",
-  "A00123414",
-  "A00123415",
-  "A00123416",
-];
-
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:6001';
 
 const groupIds = [
   "Grupo 1A",
@@ -113,6 +107,7 @@ const Sidebar = ({
   const [active, setActive] = useState("");
   const [showStudents, setShowStudents] = useState(false);
   const [showGroups, setShowGroups] = useState(false);
+  const [studentItems, setStudentItems] = useState([]);
   const navigate = useNavigate();
   const theme = useTheme();
   
@@ -126,16 +121,33 @@ const Sidebar = ({
     setActive(pathname.substring(1));
   }, [pathname]);
 
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/api/getUser`);
+        const students = response.data.filter((user) => user.rol === 'alumno');
+        setStudentItems(students);
+      } catch (error) {
+        console.error('Error fetching students for sidebar:', error);
+        setStudentItems([]);
+      }
+    };
+
+    if (userRole !== 'alumno') {
+      fetchStudents();
+    }
+  }, [userRole]);
+
   // Show nav items on all pages except login
   const navitemsActive = pathname !== "/" && (pathname.startsWith("/home") || pathname.startsWith("/student-home"));
 
-  const handleClick = (text, path) => {
+  const handleClick = (text, path, studentId) => {
     const lcText = text.toLowerCase();
     if (path) {
       navigate(path);
       setActive(lcText);
-    } else if (studentIds.includes(text)) {
-      navigate(`home/students/${text}`);
+    } else if (studentId) {
+      navigate(`/home/students/${studentId}`);
       setActive(lcText);
       setShowStudents(true);
     } else if (lcText === "grupos") { // handle Grupos item
@@ -143,7 +155,7 @@ const Sidebar = ({
       setActive(lcText);
       setShowGroups(true);
     } else if (groupIds.includes(text)) { // handle groupIds
-      navigate(`home/groups/${encodeURIComponent(text)}`); // navigate to the group page with the groupId parameter
+      navigate(`/home/groups/${encodeURIComponent(text)}`); // navigate to the group page with the groupId parameter
       setActive(lcText);
       setShowGroups(true);
     } else {
@@ -314,10 +326,10 @@ const Sidebar = ({
                     <ListItemText primary="Atrás" />
                   </ListItemButton>
                 </ListItem>
-                {studentIds.map((id) => (
-                  <ListItem key={id} disablePadding>
-                    <ListItemButton onClick={() => handleClick(id)}>
-                      <ListItemText primary={id} />
+                {studentItems.map((student) => (
+                  <ListItem key={student._id} disablePadding>
+                    <ListItemButton onClick={() => handleClick(student.matricula || student.nombre || 'alumno', null, student._id)}>
+                      <ListItemText primary={student.matricula || student.nombre || student.email} />
                     </ListItemButton>
                   </ListItem>
                 ))}

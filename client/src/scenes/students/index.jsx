@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress, Box, Avatar, Chip } from '@mui/material';
+import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress, Box, Avatar, Chip, Grid, Card, CardContent, Button } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:6001';
 
 // Helper function to format seconds to readable time
 const formatTime = (seconds) => {
@@ -23,6 +26,7 @@ const formatTime = (seconds) => {
 
 const Students = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const [students, setStudents] = useState([]);
   const [gameStats, setGameStats] = useState({});
   const [loading, setLoading] = useState(true);
@@ -31,35 +35,37 @@ const Students = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch students
-        const usersResponse = await axios.get('http://localhost:6001/api/getUser');
-        const studentUsers = usersResponse.data.filter(user => user.rol === 'alumno');
+        setLoading(true);
+        const usersResponse = await axios.get(`${API_BASE_URL}/api/getUser`);
+        const studentUsers = usersResponse.data.filter((user) => user.rol === 'alumno');
         setStudents(studentUsers);
 
-        // Fetch game stats for all students
-        const statsResponse = await axios.get('http://localhost:6001/api/game-stats');
-        
-        // Organize stats by student ID
+        const statsResponse = await axios.get(`${API_BASE_URL}/api/game-stats`);
         const statsByStudent = {};
-        statsResponse.data.forEach(stat => {
+
+        statsResponse.data.forEach((stat) => {
           const studentId = stat.studentId?.toString() || stat._id?.studentId?.toString();
+          if (!studentId) return;
+
           if (!statsByStudent[studentId]) {
             statsByStudent[studentId] = {};
           }
+
           const gameName = stat.gameName || stat._id?.gameName;
           statsByStudent[studentId][gameName] = {
-            totalTime: stat.totalTime,
-            totalSessions: stat.totalSessions,
-            highestScore: stat.highestScore
+            totalTime: stat.totalTime || 0,
+            totalSessions: stat.totalSessions || 0,
+            highestScore: stat.highestScore || 0
           };
         });
-        
+
         setGameStats(statsByStudent);
-        setLoading(false);
+        setError(null);
       } catch (err) {
         setError('Error al cargar los datos');
-        setLoading(false);
         console.error('Error fetching data:', err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -83,6 +89,10 @@ const Students = () => {
     return Object.values(studentStats).reduce((total, game) => total + (game.totalTime || 0), 0);
   };
 
+  const totalStudents = students.length;
+  const totalTrackedTime = students.reduce((acc, student) => acc + getTotalTime(student._id), 0);
+  const activeStudents = students.filter((student) => getTotalTime(student._id) > 0).length;
+
   if (loading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
@@ -100,30 +110,95 @@ const Students = () => {
   }
 
   return (
-    <>
+    <Box p="1.5rem">
       <Typography variant="h4" component="h1" gutterBottom>
         Alumnos
       </Typography>
 
-      {/* Display the table of students */}
-      <TableContainer component={Paper}>
+      <Typography variant="body1" color="text.secondary" mb={2}>
+        Consulta el avance por juego y entra al perfil de cada estudiante.
+      </Typography>
+
+      <Grid container spacing={2} mb={2}>
+        <Grid item xs={12} md={4}>
+          <Card
+            elevation={0}
+            sx={{
+              backgroundColor: theme.palette.background.alt,
+              border: `1px solid ${theme.palette.primary[200]}`
+            }}
+          >
+            <CardContent>
+              <Typography variant="overline" sx={{ color: theme.palette.secondary.main }}>Total de alumnos</Typography>
+              <Typography variant="h5" sx={{ color: theme.palette.secondary[100] }}>{totalStudents}</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <Card
+            elevation={0}
+            sx={{
+              backgroundColor: theme.palette.background.alt,
+              border: `1px solid ${theme.palette.primary[200]}`
+            }}
+          >
+            <CardContent>
+              <Typography variant="overline" sx={{ color: theme.palette.secondary.main }}>Alumnos activos</Typography>
+              <Typography variant="h5" sx={{ color: theme.palette.secondary[100] }}>{activeStudents}</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <Card
+            elevation={0}
+            sx={{
+              backgroundColor: theme.palette.background.alt,
+              border: `1px solid ${theme.palette.primary[200]}`
+            }}
+          >
+            <CardContent>
+              <Typography variant="overline" sx={{ color: theme.palette.secondary.main }}>Tiempo total jugado</Typography>
+              <Typography variant="h5" sx={{ color: theme.palette.secondary[100] }}>{formatTime(totalTrackedTime)}</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+
+      <TableContainer
+        component={Paper}
+        elevation={0}
+        sx={{
+          backgroundColor: theme.palette.background.alt,
+          border: `1px solid ${theme.palette.primary[200]}`
+        }}
+      >
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}>Foto</TableCell>
-              <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}>Nombre</TableCell>
-              <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}>Email</TableCell>
-              <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}>Matrícula</TableCell>
-              <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }} align="center">Colón</TableCell>
-              <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }} align="center">Conquista</TableCell>
-              <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }} align="center">Cronología</TableCell>
-              <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }} align="center">Preguntas</TableCell>
-              <TableCell style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }} align="center">Total</TableCell>
+              <TableCell sx={{ backgroundColor: theme.palette.primary[400], color: theme.palette.secondary[100], fontWeight: 600 }}>Foto</TableCell>
+              <TableCell sx={{ backgroundColor: theme.palette.primary[400], color: theme.palette.secondary[100], fontWeight: 600 }}>Nombre</TableCell>
+              <TableCell sx={{ backgroundColor: theme.palette.primary[400], color: theme.palette.secondary[100], fontWeight: 600 }}>Email</TableCell>
+              <TableCell sx={{ backgroundColor: theme.palette.primary[400], color: theme.palette.secondary[100], fontWeight: 600 }}>Matrícula</TableCell>
+              <TableCell sx={{ backgroundColor: theme.palette.primary[400], color: theme.palette.secondary[100], fontWeight: 600 }} align="center">Colón</TableCell>
+              <TableCell sx={{ backgroundColor: theme.palette.primary[400], color: theme.palette.secondary[100], fontWeight: 600 }} align="center">Conquista</TableCell>
+              <TableCell sx={{ backgroundColor: theme.palette.primary[400], color: theme.palette.secondary[100], fontWeight: 600 }} align="center">Cronología</TableCell>
+              <TableCell sx={{ backgroundColor: theme.palette.primary[400], color: theme.palette.secondary[100], fontWeight: 600 }} align="center">Preguntas</TableCell>
+              <TableCell sx={{ backgroundColor: theme.palette.primary[400], color: theme.palette.secondary[100], fontWeight: 600 }} align="center">Total</TableCell>
+              <TableCell sx={{ backgroundColor: theme.palette.primary[400], color: theme.palette.secondary[100], fontWeight: 600 }} align="center">Acciones</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {students.map((student) => (
-              <TableRow key={student._id} style={{ backgroundColor: theme.palette.background.default }}>
+              <TableRow
+                key={student._id}
+                hover
+                sx={{
+                  backgroundColor: theme.palette.background.alt,
+                  cursor: 'pointer',
+                  '&:hover': { backgroundColor: theme.palette.primary[100] }
+                }}
+                onClick={() => navigate(`/home/students/${student._id}`)}
+              >
                 <TableCell>
                   <Avatar 
                     src={student.foto} 
@@ -143,6 +218,7 @@ const Students = () => {
                     size="small"
                     variant="outlined"
                     color={getGameTime(student._id, 'colon') > 0 ? 'primary' : 'default'}
+                    sx={getGameTime(student._id, 'colon') > 0 ? { borderColor: theme.palette.secondary.main, color: theme.palette.secondary.main } : {}}
                   />
                 </TableCell>
                 <TableCell align="center">
@@ -152,6 +228,7 @@ const Students = () => {
                     size="small"
                     variant="outlined"
                     color={getGameTime(student._id, 'conquista') > 0 ? 'primary' : 'default'}
+                    sx={getGameTime(student._id, 'conquista') > 0 ? { borderColor: theme.palette.secondary.main, color: theme.palette.secondary.main } : {}}
                   />
                 </TableCell>
                 <TableCell align="center">
@@ -161,6 +238,7 @@ const Students = () => {
                     size="small"
                     variant="outlined"
                     color={getGameTime(student._id, 'cronologia') > 0 ? 'primary' : 'default'}
+                    sx={getGameTime(student._id, 'cronologia') > 0 ? { borderColor: theme.palette.secondary.main, color: theme.palette.secondary.main } : {}}
                   />
                 </TableCell>
                 <TableCell align="center">
@@ -170,6 +248,7 @@ const Students = () => {
                     size="small"
                     variant="outlined"
                     color={getGameTime(student._id, 'preguntas') > 0 ? 'primary' : 'default'}
+                    sx={getGameTime(student._id, 'preguntas') > 0 ? { borderColor: theme.palette.secondary.main, color: theme.palette.secondary.main } : {}}
                   />
                 </TableCell>
                 <TableCell align="center">
@@ -179,6 +258,26 @@ const Students = () => {
                     size="small"
                     color={getTotalTime(student._id) > 0 ? 'success' : 'default'}
                   />
+                </TableCell>
+                <TableCell align="center">
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    sx={{
+                      borderColor: theme.palette.secondary.main,
+                      color: theme.palette.secondary.main,
+                      '&:hover': {
+                        borderColor: theme.palette.secondary.light,
+                        backgroundColor: theme.palette.primary[100]
+                      }
+                    }}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      navigate(`/home/students/${student._id}`);
+                    }}
+                  >
+                    Ver perfil
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
@@ -193,7 +292,7 @@ const Students = () => {
           </Typography>
         </Box>
       )}
-    </>
+    </Box>
   );
 };
 
